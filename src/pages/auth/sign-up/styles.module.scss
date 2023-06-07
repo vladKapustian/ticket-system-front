@@ -1,0 +1,17 @@
+.contentContainer{
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    
+}
+
+.signInButtons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.formSubmitButton{
+    margin-right: 12px;
+}

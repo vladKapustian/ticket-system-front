@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction, createContext } from "react";
+import { Dispatch, SetStateAction, createContext, useState } from "react";
 
 interface TEmailContext {
   userEmail: string;
-  setUserEmail: Dispatch<SetStateAction<string>> | null;
+  setUserEmail: Dispatch<SetStateAction<string>> | (()=>void);
 }
 
-export const EmailContext = createContext<TEmailContext>({ userEmail: "", setUserEmail: null });
+// const [state, setState] = useState()
+export const EmailContext = createContext<TEmailContext>({ userEmail: "", setUserEmail: ()=>{} });
