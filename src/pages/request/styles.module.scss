@@ -1,18 +1,41 @@
-.requestPageContainer{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.requestPageContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: space-between;
 }
 
-.requestFormContainer{
-    width: 50%;
-    margin: 40px;
+.requestFormContainer {
+  width: 40%;
+  margin: 40px;
+  height: 80%;
 }
 
-.reportImage{
-    width: 50%;
-    height: 100%;
-    margin: 40px;
+.reportImage {
+  width: 30%;
+  margin: 40px;
+}
+
+.formPageTitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: #202022;
+}
+
+.formPageDescriptionText {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #202022;
+  margin-bottom: 24px;
+}
+
+.formItem{
+    margin-bottom: 16px;
+}
+
+.requestFormCheckbox{
+    font-size: 16px;
 }
