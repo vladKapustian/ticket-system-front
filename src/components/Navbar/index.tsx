@@ -1,26 +1,46 @@
-import Link from "next/link";
-import { useContext, useState } from "react";
-import Image from "next/image";
+import { Button, Layout, Menu, Typography } from "antd";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
 
-import { EmailContext } from "@/utils/EmailContext";
-import ExitSVG from "../../../public/exit.svg";
 import styles from "./styles.module.scss";
-import { Divider } from "antd";
+import { api } from "@/api";
 
-export const Navbar = ({ setCookies }: { setCookies: (name: "token", value: any) => void }) => {
-  let userEmail;
-  if (typeof window !== "undefined") {
-    userEmail = localStorage.getItem("userEmail");
-  }
-  // const { userEmail } = useContext(EmailContext);
+export const Navbar = () => {
+  const [_, setCookies] = useCookies(["token"]);
+  const [email, setEmail] = useState("");
+  const router = useRouter();
+
+  const logout = async () => {
+    try {
+      await api.signOut();
+      setCookies("token", null);
+      router.replace("auth/sign-in");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    setEmail(localStorage.getItem("userEmail") || "");
+  }, []);
 
   return (
-    <div className={styles.navbarContainer}>
-      <h1 className={styles.brandLogoHeader}>Тикеты</h1>
-      <div className={styles.navbarRightContainer}>
-        <h3>{userEmail}</h3>
-        <Image onClick={() => setCookies("token", null)} src={ExitSVG} alt="Выход" />
+    <Layout.Header className={styles.navbar}>
+      <div className={styles.navbarContainer}>
+        <div className={styles.leftContent}>
+          <Typography.Title className={styles.logo} level={2}>
+            Тикеты
+          </Typography.Title>
+        </div>
+        <div className={styles.rightContent}>
+          <span className={styles.email}>{email}</span>
+          <Button onClick={logout} className={styles.logoutButton}>
+            Выйти
+          </Button>
+        </div>
       </div>
-    </div>
+      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]} />
+    </Layout.Header>
   );
 };

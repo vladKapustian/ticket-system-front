@@ -2,9 +2,9 @@ import { Button, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 import styles from "./styles.module.scss";
-import { api } from "@/utils/axiosInstance";
 import { useCookies } from "react-cookie";
 import Link from "next/link";
+import { api } from "@/api";
 
 interface ISignUpFormData {
   firstname: string;
@@ -26,8 +26,7 @@ const onFormSubmit = async (values: ISignUpFormData) => {
   console.log(values);
 
   try {
-    const response = await api.post("/auth/sign-up", values);
-    if (response.data.statusCode === 404) throw new Error(response.data.message);
+    const response = await api.signUp(values);
   } catch (error) {
     console.log(error);
   }
@@ -51,15 +50,15 @@ export default function SignUp() {
         <Form.Item
           name="email"
           rules={[
-            { required: true, message: "Поле 'Логин' является обязательным" },
+            { required: true, message: "Поле обязательно для заполнения" },
             {
               required: true,
               type: "email",
-              message: "Пожалуйста, введите корректную почту",
+              message: "Некорректный адрес электронной почты",
             },
           ]}
         >
-          <Input placeholder="Логин" />
+          <Input placeholder="E-mail" />
         </Form.Item>
         <Form.Item
           name="password"
@@ -72,7 +71,7 @@ export default function SignUp() {
             },
           ]}
         >
-          <Input type="password" placeholder="Пароль" />
+          <Input.Password placeholder="Пароль" />
         </Form.Item>
 
         <Form.Item className={styles.signInButtons}>

@@ -10,23 +10,21 @@ import styles from "./styles.module.scss";
 export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
 
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
 
-  const navbarShowCondition = !(
-    router.asPath.includes("sign-in") ||
-    router.asPath.includes("sign-up") ||
-    router.asPath.includes("request")
-  );
+  const isShowCondition = !(router.asPath.includes("/auth") || router.asPath.includes("/request"));
 
   useEffect(() => {
-    if (!router.asPath.includes("/request") && !cookies.token) router.replace("/auth/sign-in");
+    console.log(!cookies.token && !router.asPath.includes("/auth"));
+
+    if (!cookies.token && !router.asPath.includes("/auth")) router.replace("/auth/sign-in");
   }, [cookies.token]);
 
   const { userEmail, setUserEmail } = useContext(EmailContext);
-  if (navbarShowCondition && cookies.token && userEmail) router.replace("/view-requests");
+
   return (
     <EmailContext.Provider value={{ userEmail, setUserEmail }}>
-      {navbarShowCondition && <Navbar setCookies={setCookies} />}
+      {isShowCondition && <Navbar />}
       <div className={styles.layoutContent}>{children}</div>
     </EmailContext.Provider>
   );

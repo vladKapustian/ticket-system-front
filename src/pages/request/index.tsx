@@ -1,10 +1,9 @@
+import React from "react";
 import Image from "next/image";
+
 import ReportImage from "../../../public/reportImage.svg";
 import styles from "./styles.module.scss";
 import { Button, Checkbox, Form, FormInstance, Input, Select } from "antd";
-import Link from "next/link";
-import React from "react";
-import FormItem from "antd/es/form/FormItem";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -22,9 +21,6 @@ export default function Request() {
         break;
       case "HIGH":
         formRef.current?.setFieldsValue(value);
-        break;
-      default:
-        break;
     }
   };
   const onFormSubmit = () => {};
@@ -84,7 +80,7 @@ export default function Request() {
               <Option value="HIGH">Высокая</Option>
             </Select>
           </Form.Item>
-          <FormItem
+          <Form.Item
             rules={[{ required: true, message: "Поле 'Текст сообщения' является обязательным" }]}
             label="Текст сообщения"
             name="description"
@@ -94,8 +90,8 @@ export default function Request() {
               maxLength={1000}
               rows={6}
             ></TextArea>
-          </FormItem>
-          <FormItem
+          </Form.Item>
+          <Form.Item
             name="agrrement"
             valuePropName="checked"
             rules={[
@@ -106,7 +102,7 @@ export default function Request() {
             ]}
           >
             <Checkbox>Я даю согласие на обработку своих персональных данных</Checkbox>
-          </FormItem>
+          </Form.Item>
 
           <Form.Item className={styles.signInButtons}>
             <Button type="primary" htmlType="submit" className={styles.formSubmitButton}>
