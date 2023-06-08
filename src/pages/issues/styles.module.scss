@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px;
+
+  .filtersWrapper {
+    min-width: 332px;
+    margin-right: 20px;
+  }
+
+  .contentWrapper {
+    flex-grow: 1;
+  }
+}
