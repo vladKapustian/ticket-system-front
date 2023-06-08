@@ -1,4 +1,4 @@
-import { Layout as AntLayout } from "antd";
+import { Layout as AntLayout, App } from "antd";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useCookies } from "react-cookie";
@@ -24,8 +24,10 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <EmailContext.Provider value={{ userEmail, setUserEmail }}>
-      {isShowCondition && <Navbar />}
-      <div className={styles.layoutContent}>{children}</div>
+      <App>
+        {isShowCondition && <Navbar />}
+        <div className={styles.layoutContent}>{children}</div>
+      </App>
     </EmailContext.Provider>
   );
 }

@@ -1,14 +1,33 @@
 .layoutContainer{
     max-width: 1440px;
+    min-height: 100vh;
     margin: 0 auto;
+    display: flex ;
+    align-items: center;
+    justify-content: center;
 }
 
 .loginFormContainer{
-    max-width: 500px;
+    max-width: 400px;
+    width: 100%;
+    
+}
+
+.loginFormTitle{
+    font-size: 12px;
+}
+
+.loginForm{
+    max-width: 400px;
     margin: 20px 0 20px 0;
+    padding: 12px 3;
     width: 100%;
 }
 
 .formSubmitButton{
     margin-right: 12px;
+}
+
+.loadingSpin{
+    position: absolute;
 }
