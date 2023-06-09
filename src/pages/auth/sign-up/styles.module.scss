@@ -1,8 +1,27 @@
 .contentContainer{
     max-width: 1440px;
     width: 100%;
+    min-height: 100vh;
     margin: 0 auto;
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginFormContainer{
+    min-width: 400px;
+}
+
+.loadingSpin{
+    position: absolute;
+    margin: 50%;
+
+}
+
+.formContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .signInButtons{

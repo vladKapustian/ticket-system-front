@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import ReportImage from "../../../public/reportImage.svg";
 import styles from "./styles.module.scss";
-import { Button, Checkbox, Form, FormInstance, Input, Select } from "antd";
+import { App, Button, Checkbox, Form, FormInstance, Input, Select } from "antd";
 import { Typography } from "antd";
+import { useRouter } from "next/router";
+import { api } from "@/api";
+import { EIssuePriority } from "@/types/Issue";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -13,25 +16,49 @@ interface IRequestFormValue {
   reporterName: string;
   reporterEmail: string;
   title: string;
+  description: string;
+  priority: EIssuePriority;
 }
 
 export default function Request() {
+  const router = useRouter();
+  const { message } = App.useApp();
+  const [loading, setIsLoading] = useState(false);
   const formRef = React.useRef<FormInstance>(null);
 
-  const onGenderChange = (value: string) => {
+  const onValuerChange = (value: EIssuePriority) => {
     switch (value) {
-      case "LOW":
+      case EIssuePriority.LOW:
         formRef.current?.setFieldsValue(value);
         break;
-      case "MEDIUM":
+      case EIssuePriority.MEDIUM:
         formRef.current?.setFieldsValue(value);
         break;
-      case "HIGH":
+      case EIssuePriority.HIGH:
         formRef.current?.setFieldsValue(value);
         break;
     }
   };
-  const onFormSubmit = (values: IRequestFormValue) => {};
+
+  const showErrorMessage = () => {
+    message.error("Не удалось войти в аккаунт");
+  };
+
+  const onFormSubmit = async (values: IRequestFormValue) => {
+    try {
+      setIsLoading(true);
+      const response = await api.createRequest(values);
+      if (response.data) {
+        router.replace("/view-requests");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      showErrorMessage();
+      console.error(error);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <div className={styles.requestPageContainer}>
       <Image className={styles.reportImage} src={ReportImage} alt="" />
@@ -79,10 +106,10 @@ export default function Request() {
             name="priority"
             rules={[{ required: true, message: "Поле обязательно для заполнения" }]}
           >
-            <Select placeholder="Выберите уровень важности заявки" onChange={onGenderChange} allowClear>
-              <Option value="LOW">Низкая</Option>
-              <Option value="MEDIUM">Средняя</Option>
-              <Option value="HIGH">Высокая</Option>
+            <Select placeholder="Выберите уровень важности заявки" onChange={onValuerChange} allowClear>
+              <Option value={EIssuePriority.LOW}>Низкая</Option>
+              <Option value={EIssuePriority.MEDIUM}>Средняя</Option>
+              <Option value={EIssuePriority.HIGH}>Высокая</Option>
             </Select>
           </Form.Item>
           <Form.Item

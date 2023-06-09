@@ -10,8 +10,6 @@ import styles from "./styles.module.scss";
 import { api } from "@/api";
 import { useState } from "react";
 
-const { Title } = Typography;
-
 const validatePassword = (_: any, passwordValue: string, callback: (error?: string) => void) => {
   if (passwordValue.length > +8) {
     Promise.resolve();
@@ -25,11 +23,10 @@ export default function SignIn() {
   const router = useRouter();
   const [cookies, setCookies] = useCookies(["token", "email"]);
   const { message } = App.useApp();
-  const [loading, setIsLoading] = useState(false);
-  // const { userEmail, setUserEmail } = useContext(EmailContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const showErrorMessage = () => {
-    message.error("This is an error message");
+    message.error("Не удалось войти в аккаунт");
   };
 
   const onFormSubmit = async (values: SignInData) => {
@@ -40,25 +37,23 @@ export default function SignIn() {
         setCookies("token", response.data, {
           expires: new Date("Thu Jan 01 2099 00:00:00 GMT+0300 (Moscow Standard Time)"),
         });
-
         localStorage.setItem("userEmail", values.email);
-
-        router.replace("/view-requests");
+        router.replace("/issues");
       }
     } catch (error) {
-      setIsLoading(false);
       showErrorMessage();
       console.error(error);
+      setIsLoading(false);
     }
     setIsLoading(false);
   };
 
   return (
     <div>
-      {loading && <Spin className={styles.loadingSpin} size="large" />}
+      {isLoading && <Spin className={styles.loadingSpin} size="large" />}
       <div className={styles.layoutContainer}>
         <Card className={styles.loginFormContainer}>
-          <Title level={3}>Вход в систему тикетов</Title>
+          <Typography.Title level={3}>Вход в систему тикетов</Typography.Title>
           <Form
             layout="vertical"
             name="normal_login"

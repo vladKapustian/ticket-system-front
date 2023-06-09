@@ -1,10 +1,10 @@
-export enum IssuePriority {
+export enum EIssuePriority {
   LOW = "LOW",
   MEDIUM = "MEDIUM",
   HIGH = "MEDIUM",
 }
 
-export enum IssueStatus {
+export enum EIssueStatus {
   BACKLOG = "BACKLOG",
   IN_PROGRESS = "IN_PROGRESS",
   IN_TESTING = "IN_TESTING",
@@ -12,28 +12,28 @@ export enum IssueStatus {
   CANCELED = "CANCELED",
 }
 
-export type Issue = {
+export type TIssue = {
   id: number;
   title: string;
   description: string;
-  status: IssueStatus;
-  priority: IssuePriority;
+  status: EIssueStatus;
+  priority: EIssuePriority;
   reporterEmail: string;
   reporterName: string;
   updatedAt: Date;
   createdAt: Date;
 };
 
-export const issuePriorityDictionary: Record<IssuePriority, string> = {
-  [IssuePriority.LOW]: "Несрочно",
-  [IssuePriority.MEDIUM]: "Некритично",
-  [IssuePriority.HIGH]: "Критично",
+export const issuePriorityDictionary: Record<EIssuePriority, string> = {
+  [EIssuePriority.LOW]: "Несрочно",
+  [EIssuePriority.MEDIUM]: "Некритично",
+  [EIssuePriority.HIGH]: "Критично",
 };
 
-export const issueStatusDictionary: Record<IssueStatus, string> = {
-  [IssueStatus.BACKLOG]: "Бэклог",
-  [IssueStatus.CANCELED]: "Отменено",
-  [IssueStatus.IN_PROGRESS]: "В процессе",
-  [IssueStatus.IN_TESTING]: "На тестировании",
-  [IssueStatus.RESOLVED]: "Готово",
+export const issueStatusDictionary: Record<EIssueStatus, string> = {
+  [EIssueStatus.BACKLOG]: "Бэклог",
+  [EIssueStatus.CANCELED]: "Отменено",
+  [EIssueStatus.IN_PROGRESS]: "В процессе",
+  [EIssueStatus.IN_TESTING]: "На тестировании",
+  [EIssueStatus.RESOLVED]: "Готово",
 };

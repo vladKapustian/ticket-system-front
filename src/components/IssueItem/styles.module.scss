@@ -1,8 +1,10 @@
 .wrapper {
   background-color: white;
+  
 
   .header {
     padding: 16px 24px;
+    border-left: solid 4px;
     border-bottom: 1px solid #dbdbdb;
     cursor: pointer;
 
@@ -68,6 +70,13 @@
       .bodyFooterLeft {
       }
       .bodyFooterRight {
+         display: flex;
+         flex-direction: row;
+
+        .selects{
+          margin: 0 4px;
+          min-width: 120px;
+        }
       }
     }
   }
