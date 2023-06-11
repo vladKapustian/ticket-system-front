@@ -69,8 +69,6 @@ export const Navbar = () => {
           theme="light"
           mode="horizontal"
           onClick={setMenuSelectedItem}
-          defaultSelectedKeys={[router.asPath]}
-          selectedKeys={[router.asPath]}
         />
         <div className={styles.rightContent}>
           <span className={styles.email}>{email}</span>
