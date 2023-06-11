@@ -121,8 +121,9 @@ export default function Request() {
                 name="description"
               >
                 <TextArea
-                  placeholder="Введите текст сообщения (не более 1000 сивмолов)"
-                  maxLength={1000}
+                  className={styles.formTextArea}
+                  placeholder="Введите текст сообщения (не более 500 сивмолов)"
+                  maxLength={500}
                   rows={6}
                 ></TextArea>
               </Form.Item>
