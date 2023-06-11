@@ -29,6 +29,14 @@
     }
 
     .leftContent {
+      display: flex;
+      flex-direction: row;
+      align-items:first baseline;
+      gap: 20px;
+
+      .approveSignupLink{
+        margin: 4px;
+      }
     }
 
     .rightContent {

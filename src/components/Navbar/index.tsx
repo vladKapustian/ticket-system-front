@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 
 import styles from "./styles.module.scss";
 import { api } from "@/api";
+import Link from "next/link";
 
 export const Navbar = () => {
   const [_, setCookies] = useCookies(["token"]);
@@ -32,6 +33,11 @@ export const Navbar = () => {
           <Typography.Title className={styles.logo} level={2}>
             Тикеты
           </Typography.Title>
+          <Link href="/approve-sign-up/">
+            <Typography.Title className={styles.approveSignupLink} level={4}>
+              Заявки вступления в техподдержку
+            </Typography.Title>
+          </Link>
         </div>
         <div className={styles.rightContent}>
           <span className={styles.email}>{email}</span>

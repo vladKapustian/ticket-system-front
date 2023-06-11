@@ -1,4 +1,4 @@
-import { Button, Card, Form, Input, Spin, Typography } from "antd";
+import { App, Button, Card, Form, Input, Spin, Typography } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 import styles from "./styles.module.scss";
@@ -27,14 +27,25 @@ const validatePassword = (_: any, passwordValue: string, callback: Function) => 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { message } = App.useApp();
+
+  const showSuccessMessage = () => {
+    message.success("Пользователь успешно создан. Дождитесь подтверждения администатора");
+  };
+
+  const showErrorMessage = () => {
+    message.success("Не удалось создать пользователя. Проверьте все введенные данные или обратитесь к администратору");
+  };
 
   const onFormSubmit = async (values: ISignUpFormData) => {
     try {
       setIsLoading(true);
       await api.signUp(values);
+      showSuccessMessage();
       router.replace("/auth/sign-in/");
     } catch (error) {
       console.log(error);
+      showErrorMessage();
     }
     setIsLoading(false);
   };

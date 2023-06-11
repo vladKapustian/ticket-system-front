@@ -1,6 +1,6 @@
 import { User } from "@/types/User";
 import { axiosInstance } from "../axiosInstance";
-import { TIssue, EIssuePriority } from "@/types/Issue";
+import { TIssue, EIssuePriority, EIssueStatus } from "@/types/Issue";
 import { AxiosResponse } from "axios";
 
 export type RequestCreateData = {
@@ -21,20 +21,26 @@ export type RequestCreateData = {
     meta: Pagination;
   }
 
+ type GetIssuesListParams = {
+    title?: string;
+    limit?: number;
+    page?: number;
+  }
+
 export const requestApi = {
   createRequest: (values: RequestCreateData) => {
     return axiosInstance.post("/issues", values);
   },
   deleteRequest: (values: TIssue) => {
-    return axiosInstance.patch(`${values.id}/status`, values);
+    return axiosInstance.patch(`/issues/${values.id}/status`, values);
   },
-  updateRequestPriority: (values: TIssue) => {
-    return axiosInstance.patch(`/${values.id}/priority`);
+  updateRequestPriority: (priority: {priority:string}, issueId:number) => {
+    return axiosInstance.patch(`/issues/${issueId}/priority`, priority);
   },
-  updateRequestStatus: (values: TIssue) => {
-    return axiosInstance.patch(`/${values.id}/status`);
+  updateRequestStatus: (status: {status:string}, issueId:number) => {
+    return axiosInstance.patch(`/issues/${issueId}/status`, status);
   },
-  getAllRequests:():Promise<AxiosResponse<IssuesListDTO>>=>{
-    return axiosInstance.get("/issues")
+  getAllRequests:(params:GetIssuesListParams = {limit:20, page:1}):Promise<AxiosResponse<IssuesListDTO>>=>{
+    return axiosInstance.get("/issues", {params:params})
   },
 };

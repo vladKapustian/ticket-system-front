@@ -1,71 +1,90 @@
-import { Col } from "antd";
+import { Button, Col, Empty, Input, Select, Typography } from "antd";
 import styles from "./styles.module.scss";
 import IssueItem from "@/components/IssueItem";
-import { EIssuePriority, EIssueStatus, TIssue } from "@/types/Issue";
+import { EIssuePriority, EIssueStatus, TIssue, issuePriorityDictionary, issueStatusDictionary } from "@/types/Issue";
 import { useEffect, useState } from "react";
 import { Skeleton } from "antd";
 
 import { api } from "@/api";
+import { useRouter } from "next/router";
+
+const preparedOptionsForStatusSelect = Object.entries(issueStatusDictionary).map(([key, value]) => ({
+  label: key,
+  value,
+}));
+const preparedOptionsForPrioritySelect = Object.entries(issuePriorityDictionary).map(([key, value]) => ({
+  label: key,
+  value,
+}));
+
+const debounce = (fn: Function, ms = 300) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return function (this: any, ...args: any[]) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn.apply(this, args), ms);
+  };
+};
 
 export default function ViewRequests() {
+  const router = useRouter();
   const [issues, setIssues] = useState<TIssue[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [titleSearch, setTitleSearch] = useState<string>();
 
   const fetchIssues = async () => {
-    const _issues = await api.getAllRequests();
-    setIssues(_issues.data.data);
-  };
-  useEffect(() => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      fetchIssues();
-
-      issuesLayout();
+      const res = await api.getAllRequests({ title: titleSearch });
+      setIssues(res.data.data);
     } catch (err) {
       console.error(err);
+      localStorage.clear();
+      router.replace("auth/sign-in");
     }
     setIsLoading(false);
+  };
+  useEffect(() => {
+    fetchIssues();
   }, []);
 
-  const issuesLayout = () => {
-    if (issues.length) {
-      return issues.map((issue) => <IssueItem key={issue.id} issue={issue} />);
+  let searchValue: string = "";
+  const changeTitleSearchValue = () => {
+    setTitleSearch(titleSearch);
+    fetchIssues;
+  };
+
+  const notFound = () => {
+    if (!issues.length) {
+      return <Empty className={styles.empltyIssuesList} description={<span>Не удалось найти тикеты</span>} />;
     }
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.filtersWrapper}>ee</div>
+      <div className={styles.filtersWrapper}>
+        <Typography.Title level={4}>Фильтры</Typography.Title>
+        <div className={styles.titleItemContainer}>
+          <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по теме</Typography.Paragraph>
+          <Input.Search
+            value={titleSearch}
+            onChange={changeTitleSearchValue}
+            placeholder="Заголовок искомого обращения"
+            className={styles.titleFilter}
+          />
+        </div>
+        <div className={styles.titleItemContainer}>
+          <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по приоритету</Typography.Paragraph>
+          <Select options={preparedOptionsForPrioritySelect} placeholder="Приоритет" className={styles.selectFilter} />
+        </div>
+        <div className={styles.titleItemContainer}>
+          <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по статусу</Typography.Paragraph>
+          <Select options={preparedOptionsForStatusSelect} placeholder="Статус" className={styles.selectFilter} />
+        </div>
+      </div>
       <div className={styles.contentWrapper}>
         {isLoading ? <Skeleton /> : issues.map((issue) => <IssueItem key={issue.id} issue={issue} />)}
+        {notFound()}
       </div>
     </div>
   );
 }
-
-const mockIssues: TIssue[] = [
-  {
-    id: 2,
-    title: "Опять что-то наебнулось. Почините, пожалуйста",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu ",
-    reporterEmail: "aleksandrstraus3456@gmail.com",
-    reporterName: "Раша",
-    status: EIssueStatus.IN_PROGRESS,
-    priority: EIssuePriority.HIGH,
-    updatedAt: new Date(),
-    createdAt: new Date(),
-  },
-  {
-    id: 1,
-    title: "Опять что-то наебнулось. Почините, пожалуйста",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu ",
-    reporterEmail: "aleksandrstraus3456@gmail.com",
-    reporterName: "Раша",
-    status: EIssueStatus.IN_PROGRESS,
-    priority: EIssuePriority.HIGH,
-    updatedAt: new Date(),
-    createdAt: new Date(),
-  },
-];

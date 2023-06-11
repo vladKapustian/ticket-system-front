@@ -7,9 +7,26 @@
   .filtersWrapper {
     min-width: 332px;
     margin-right: 20px;
+
+    .titleItemContainer {
+      margin-top: 12px;
+      margin-bottom: 0px;
+
+      .filterTitleParagraph {
+        margin-bottom: 0px;
+      }
+
+      .selectFilter {
+        width: 100%;
+      }
+    }
   }
 
   .contentWrapper {
     flex-grow: 1;
+
+    .empltyIssuesList {
+      margin: 50%;
+    }
   }
 }

@@ -1,7 +1,7 @@
 export enum EIssuePriority {
   LOW = "LOW",
   MEDIUM = "MEDIUM",
-  HIGH = "MEDIUM",
+  HIGH = "HIGH",
 }
 
 export enum EIssueStatus {

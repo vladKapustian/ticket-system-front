@@ -1,0 +1,12 @@
+.signupRequestWrapper {
+max-width: 300px;
+width: 100%;
+flex-wrap: nowrap;
+
+
+
+  .requestCardBody {
+    display: flex;
+flex-direction: column;
+  }
+}

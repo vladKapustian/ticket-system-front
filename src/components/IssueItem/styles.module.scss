@@ -1,12 +1,20 @@
 .wrapper {
   background-color: white;
   
-
+  
   .header {
     padding: 16px 24px;
-    border-left: solid 4px;
     border-bottom: 1px solid #dbdbdb;
+    position: relative;
     cursor: pointer;
+    
+    .statusIndicator {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+    }
 
     .headerTop {
       display: flex;
@@ -70,10 +78,10 @@
       .bodyFooterLeft {
       }
       .bodyFooterRight {
-         display: flex;
-         flex-direction: row;
+        display: flex;
+        flex-direction: row;
 
-        .selects{
+        .selects {
           margin: 0 4px;
           min-width: 120px;
         }

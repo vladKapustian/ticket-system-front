@@ -19,15 +19,15 @@ const validatePassword = (_: any, passwordValue: string, callback: (error?: stri
   }
 };
 
+const showErrorMessage = () => {
+  message.error("Не удалось войти в аккаунт");
+};
+
 export default function SignIn() {
   const router = useRouter();
   const [cookies, setCookies] = useCookies(["token", "email"]);
-  const { message } = App.useApp();
   const [isLoading, setIsLoading] = useState(false);
-
-  const showErrorMessage = () => {
-    message.error("Не удалось войти в аккаунт");
-  };
+  const { message } = App.useApp();
 
   const onFormSubmit = async (values: SignInData) => {
     try {
