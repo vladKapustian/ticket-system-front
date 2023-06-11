@@ -17,13 +17,13 @@ const preparedOptionsForPrioritySelect = Object.entries(issuePriorityDictionary)
   value,
 }));
 
-const debounce = (fn: Function, ms = 300) => {
-  let timeoutId: ReturnType<typeof setTimeout>;
-  return function (this: any, ...args: any[]) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn.apply(this, args), ms);
-  };
-};
+// const debounce = (fn: Function, ms = 300) => {
+//   let timeoutId: ReturnType<typeof setTimeout>;
+//   return function (this: any, ...args: any[]) {
+//     clearTimeout(timeoutId);
+//     timeoutId = setTimeout(() => fn.apply(this, args), ms);
+//   };
+// };
 
 export default function ViewRequests() {
   const router = useRouter();
@@ -43,21 +43,21 @@ export default function ViewRequests() {
     }
     setIsLoading(false);
   };
-  useEffect(() => {
-    fetchIssues();
-  }, []);
-
+  
   let searchValue: string = "";
   const changeTitleSearchValue = () => {
     setTitleSearch(titleSearch);
     fetchIssues;
   };
-
+  
   const notFound = () => {
     if (!issues.length) {
       return <Empty className={styles.empltyIssuesList} description={<span>Не удалось найти тикеты</span>} />;
     }
   };
+  useEffect(() => {
+    fetchIssues();
+  }, []);
 
   return (
     <div className={styles.container}>

@@ -33,7 +33,7 @@ const SignupRequest = ({ request }: Props) => {
             </Button>
           </div>
         ) : (
-          <Typography.Text>{request.role}</Typography.Text>
+          <Typography.Text className={styles.approveButtonContainer}>Роль: Администратор</Typography.Text>
         )}
       </div>
     </Card>

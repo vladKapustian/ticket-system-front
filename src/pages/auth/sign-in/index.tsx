@@ -33,10 +33,13 @@ export default function SignIn() {
     try {
       setIsLoading(true);
       const response = await api.signIn(values);
+      console.log(response);
+
       if (response.data) {
-        setCookies("token", response.data, {
+        setCookies("token", response.data.token, {
           expires: new Date("Thu Jan 01 2099 00:00:00 GMT+0300 (Moscow Standard Time)"),
         });
+        localStorage.setItem("role", response.data.role);
         localStorage.setItem("userEmail", values.email);
         router.replace("/issues");
       }

@@ -31,10 +31,11 @@
     .leftContent {
       display: flex;
       flex-direction: row;
-      align-items:first baseline;
+      align-items: center;
       gap: 20px;
 
       .approveSignupLink{
+        min-height: 100%;
         margin: 4px;
       }
     }
