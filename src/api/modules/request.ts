@@ -21,11 +21,13 @@ export type RequestCreateData = {
     meta: Pagination;
   }
 
- type GetIssuesListParams = {
-    title?: string;
-    limit?: number;
-    page?: number;
-  }
+ export type GetIssuesListParams = {
+  title?: string;
+  status?: EIssueStatus;
+  priority?: EIssuePriority;
+  limit?: number;
+  page?: number;
+}
 
 export const requestApi = {
   createRequest: (values: RequestCreateData) => {

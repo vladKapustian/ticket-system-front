@@ -7,12 +7,13 @@ import { Skeleton } from "antd";
 
 import { api } from "@/api";
 import { useRouter } from "next/router";
+import { GetIssuesListParams } from "@/api/modules/request";
 
-const preparedOptionsForStatusSelect = Object.entries(issueStatusDictionary).map(([key, value]) => ({
+const preparedOptionsForStatusSelect = Object.entries(EIssueStatus).map(([key, value]) => ({
   label: key,
   value,
 }));
-const preparedOptionsForPrioritySelect = Object.entries(issuePriorityDictionary).map(([key, value]) => ({
+const preparedOptionsForPrioritySelect = Object.entries(EIssuePriority).map(([key, value]) => ({
   label: key,
   value,
 }));
@@ -29,12 +30,16 @@ export default function ViewRequests() {
   const router = useRouter();
   const [issues, setIssues] = useState<TIssue[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [titleSearch, setTitleSearch] = useState<string>();
 
-  const fetchIssues = async () => {
+  const getRequestParamsFromRoute = () => {
+    const query = router.query as GetIssuesListParams;
+    return query;
+  };
+
+  const fetchIssues = async (fetchParams: GetIssuesListParams) => {
     setIsLoading(true);
     try {
-      const res = await api.getAllRequests({ title: titleSearch });
+      const res = await api.getAllRequests(fetchParams);
       setIssues(res.data.data);
     } catch (err) {
       console.error(err);
@@ -43,20 +48,32 @@ export default function ViewRequests() {
     }
     setIsLoading(false);
   };
-  
-  let searchValue: string = "";
-  const changeTitleSearchValue = () => {
-    setTitleSearch(titleSearch);
-    fetchIssues;
+
+  const onFilterSeacrchSubmit = (value: string) => {
+    console.log(value);
+    router.query.title = value;
+    fetchIssues(getRequestParamsFromRoute());
   };
-  
+
+  const onPriorityChange = (value: EIssuePriority) => {
+    console.log(value);
+    router.query.priority = EIssuePriority[value];
+    fetchIssues(getRequestParamsFromRoute());
+  };
+  const onStatusChange = (value: EIssueStatus) => {
+    console.log(EIssueStatus[value]);
+    router.query.status = EIssueStatus[value];
+    fetchIssues(getRequestParamsFromRoute());
+  };
+
   const notFound = () => {
     if (!issues.length) {
-      return <Empty className={styles.empltyIssuesList} description={<span>Не удалось найти тикеты</span>} />;
+      return <Empty className={styles.empltyIssuesList} description="Не удалось найти тикеты" />;
     }
   };
+
   useEffect(() => {
-    fetchIssues();
+    fetchIssues(getRequestParamsFromRoute());
   }, []);
 
   return (
@@ -66,19 +83,28 @@ export default function ViewRequests() {
         <div className={styles.titleItemContainer}>
           <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по теме</Typography.Paragraph>
           <Input.Search
-            value={titleSearch}
-            onChange={changeTitleSearchValue}
+            onSearch={onFilterSeacrchSubmit}
             placeholder="Заголовок искомого обращения"
             className={styles.titleFilter}
           />
         </div>
         <div className={styles.titleItemContainer}>
           <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по приоритету</Typography.Paragraph>
-          <Select options={preparedOptionsForPrioritySelect} placeholder="Приоритет" className={styles.selectFilter} />
+          <Select
+            onChange={onPriorityChange}
+            options={preparedOptionsForPrioritySelect}
+            placeholder="Приоритет"
+            className={styles.selectFilter}
+          />
         </div>
         <div className={styles.titleItemContainer}>
           <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по статусу</Typography.Paragraph>
-          <Select options={preparedOptionsForStatusSelect} placeholder="Статус" className={styles.selectFilter} />
+          <Select
+            onChange={onStatusChange}
+            options={preparedOptionsForStatusSelect}
+            placeholder="Статус"
+            className={styles.selectFilter}
+          />
         </div>
       </div>
       <div className={styles.contentWrapper}>
