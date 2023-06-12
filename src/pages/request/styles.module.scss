@@ -54,119 +54,31 @@
 
 @media screen and (max-width: 960px) {
   .requestPageContainer {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: space-between;
-
-    .requestFormWrapper {
-      width: 40%;
-      margin: 30px;
-      height: 80vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      .formContainer {
-        display: flex;
-        flex-direction: column;
-        min-height: 100%;
-      }
-      .resultContainer {
-      }
+    .reportImage {
+   width: 45%;
+   margin: 16px;
     }
   }
 
-  .reportImage {
-    width: 40%;
-    margin: 30px;
-  }
 
-  .formPageTitle {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    color: #202022;
-  }
-
-  .formPageDescriptionText {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    color: #202022;
-    margin-bottom: 24px;
-  }
-
-  .formItem {
-    margin-bottom: 16px;
-  }
-
-  .requestFormCheckbox {
-    font-size: 16px;
-  }
 }
-
 @media screen and (max-width: 660px) {
   .requestPageContainer {
-    margin: 4px;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .reportImage{
+    .requestFormWrapper{
+      margin: 20px 16px;
+      width: 100%;
+    }
+    .reportImage {
       display: none;
     }
 
-    .requestFormWrapper {
-      width:100%;
-      margin: 30px;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      .formContainer {
-        display: flex;
-        flex-direction: column;
-        min-height: 100%;
-      }
-      .resultContainer {
-
-      }
+    .formContainer{
+      width: 100%;
     }
+
   }
-
-  .reportImage {
-    width: 40%;
-    margin: 30px;
-  }
-
-  .formPageTitle {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    color: #202022;
-  }
-
-  .formPageDescriptionText {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    color: #202022;
-    margin-bottom: 24px;
-  }
-
-  .formItem {
-    margin-bottom: 12px;
-  }
-
-
-  .requestFormCheckbox {
-    font-size: 16px;
+  .formItem{
+    margin-bottom: 2px;
   }
 }
+
