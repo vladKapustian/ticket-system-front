@@ -1,5 +1,5 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { App, Button, Card, Form, Input, Spin, Typography, message } from "antd";
+import { App, Button, Card, Form, Input, Spin, Typography } from "antd";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -19,15 +19,15 @@ const validatePassword = (_: any, passwordValue: string, callback: (error?: stri
   }
 };
 
-const showErrorMessage = () => {
-  message.error("Не удалось войти в аккаунт");
-};
-
 export default function SignIn() {
   const router = useRouter();
   const [cookies, setCookies] = useCookies(["token", "email"]);
   const [isLoading, setIsLoading] = useState(false);
   const { message } = App.useApp();
+
+  const showErrorMessage = () => {
+    message.error("Не удалось войти в аккаунт");
+  };
 
   const onFormSubmit = async (values: SignInData) => {
     try {
@@ -53,7 +53,11 @@ export default function SignIn() {
 
   return (
     <div>
-      {isLoading && <Spin className={styles.loadingSpin} size="large" />}
+      {isLoading && (
+        <div className={styles.loadingCOntainer}>
+          <Spin className={styles.loadingSpin} size="large" />
+        </div>
+      )}
       <div className={styles.layoutContainer}>
         <Card className={styles.loginFormContainer}>
           <Typography.Title level={3}>Вход в систему тикетов</Typography.Title>

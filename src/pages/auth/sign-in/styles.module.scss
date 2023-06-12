@@ -28,6 +28,17 @@
     margin-right: 12px;
 }
 
+
+.loadingContainer{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba($color: #4a4646, $alpha: 8.0);
+    
 .loadingSpin{
     position: absolute;
-}
+    top: 50%;
+    left: 50%;
+  margin-left: -4em;
+
+}}
