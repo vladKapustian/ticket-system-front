@@ -44,7 +44,6 @@ export default function SignUp() {
       showSuccessMessage();
       router.replace("/auth/sign-in/");
     } catch (error) {
-      console.log(error);
       showErrorMessage();
     }
     setIsLoading(false);

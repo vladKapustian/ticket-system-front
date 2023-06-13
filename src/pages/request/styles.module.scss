@@ -55,16 +55,14 @@
 @media screen and (max-width: 960px) {
   .requestPageContainer {
     .reportImage {
-   width: 45%;
-   margin: 16px;
+      width: 45%;
+      margin: 16px;
     }
   }
-
-
 }
 @media screen and (max-width: 660px) {
   .requestPageContainer {
-    .requestFormWrapper{
+    .requestFormWrapper {
       margin: 20px 16px;
       width: 100%;
     }
@@ -72,13 +70,11 @@
       display: none;
     }
 
-    .formContainer{
+    .formContainer {
       width: 100%;
     }
-
   }
-  .formItem{
+  .formItem {
     margin-bottom: 2px;
   }
 }
-

@@ -4,29 +4,63 @@
   margin: 0 auto;
   padding: 20px;
 
-  .filtersWrapper {
-    min-width: 332px;
-    margin-right: 20px;
+  .layoutWrapper {
+    margin-top: 12px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 
-    .titleItemContainer {
-      margin-top: 12px;
-      margin-bottom: 0px;
+    .filtersWrapper {
+      min-width: 320px;
+      max-width: 360px;
+      margin-right: 20px;
 
-      .filterTitleParagraph {
-        margin-bottom: 0px;
+      .titleItemContainer {
+        margin-bottom: 12px;
+
+        .filterTitleParagraph {
+          margin-bottom: 4px;
+        }
+
+        .selectFilter {
+          width: 100%;
+        }
       }
+    }
 
-      .selectFilter {
+    .contentWrapper {
+      flex-grow: 1;
+
+      .empltyIssuesList {
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .container {
+    .layoutWrapper {
+      .filtersWrapper {
+        min-width: 160px;
+        max-width: 200px;
         width: 100%;
       }
     }
   }
+}
 
-  .contentWrapper {
-    flex-grow: 1;
-
-    .empltyIssuesList {
-      
+@media screen and (max-width: 600px) {
+  .container {
+    .layoutWrapper {
+      flex-direction: column;
+      .filtersWrapper {
+        min-width: 100%;
+        max-width: 200px;
+        width: 100%;
+        margin: 0px;
+      }
     }
   }
 }

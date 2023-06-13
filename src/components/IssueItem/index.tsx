@@ -102,13 +102,17 @@ const IssueItem = ({ issue }: Props) => {
               <div className={styles.bodyFooterLeft}>Обновлено: {issue.updatedAt.toLocaleString()}</div>
 
               <div className={styles.bodyFooterRight}>
-                <div>
+                <div className={styles.footerRightItemWrapper}>
+                  <Typography.Text>Статус</Typography.Text>
                   <Select
                     onChange={setStatusSelectValue}
                     className={styles.selects}
                     options={preparedOptionsForStatusSelect}
                     value={statusSelectValue}
                   />
+                </div>
+                <div className={styles.footerRightItemWrapper}>
+                  <Typography.Text>Приоритет</Typography.Text>
                   <Select
                     onChange={setPrioritySelectValue}
                     className={styles.selects}
@@ -116,9 +120,6 @@ const IssueItem = ({ issue }: Props) => {
                     value={prioritySelectValue}
                   />
                 </div>
-                {/* <Button type="link" onClick={openModal}>
-                  Ответить
-                </Button> */}
               </div>
             </div>
           </div>

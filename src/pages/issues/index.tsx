@@ -18,14 +18,6 @@ const preparedOptionsForPrioritySelect = Object.entries(EIssuePriority).map(([ke
   value,
 }));
 
-// const debounce = (fn: Function, ms = 300) => {
-//   let timeoutId: ReturnType<typeof setTimeout>;
-//   return function (this: any, ...args: any[]) {
-//     clearTimeout(timeoutId);
-//     timeoutId = setTimeout(() => fn.apply(this, args), ms);
-//   };
-// };
-
 export default function ViewRequests() {
   const router = useRouter();
   const [issues, setIssues] = useState<TIssue[] | []>([]);
@@ -44,24 +36,21 @@ export default function ViewRequests() {
     } catch (err) {
       console.error(err);
       localStorage.clear();
-      router.replace("auth/sign-in");
+      router.replace("/auth/sign-in");
     }
     setIsLoading(false);
   };
 
   const onFilterSeacrchSubmit = (value: string) => {
-    console.log(value);
     router.query.title = value;
     fetchIssues(getRequestParamsFromRoute());
   };
 
   const onPriorityChange = (value: EIssuePriority) => {
-    console.log(value);
     router.query.priority = EIssuePriority[value];
     fetchIssues(getRequestParamsFromRoute());
   };
   const onStatusChange = (value: EIssueStatus) => {
-    console.log(EIssueStatus[value]);
     router.query.status = EIssueStatus[value];
     fetchIssues(getRequestParamsFromRoute());
   };
@@ -78,38 +67,40 @@ export default function ViewRequests() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.filtersWrapper}>
-        <Typography.Title level={4}>Фильтры</Typography.Title>
-        <div className={styles.titleItemContainer}>
-          <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по теме</Typography.Paragraph>
-          <Input.Search
-            onSearch={onFilterSeacrchSubmit}
-            placeholder="Заголовок искомого обращения"
-            className={styles.titleFilter}
-          />
+      <div className={styles.layoutWrapper}>
+        <div className={styles.filtersWrapper}>
+          <Typography.Title level={4}>Фильтры</Typography.Title>
+          <div className={styles.titleItemContainer}>
+            <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по теме</Typography.Paragraph>
+            <Input.Search
+              onSearch={onFilterSeacrchSubmit}
+              placeholder="Заголовок искомого обращения"
+              className={styles.titleFilter}
+            />
+          </div>
+          <div className={styles.titleItemContainer}>
+            <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по приоритету</Typography.Paragraph>
+            <Select
+              onChange={onPriorityChange}
+              options={preparedOptionsForPrioritySelect}
+              placeholder="Приоритет"
+              className={styles.selectFilter}
+            />
+          </div>
+          <div className={styles.titleItemContainer}>
+            <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по статусу</Typography.Paragraph>
+            <Select
+              onChange={onStatusChange}
+              options={preparedOptionsForStatusSelect}
+              placeholder="Статус"
+              className={styles.selectFilter}
+            />
+          </div>
         </div>
-        <div className={styles.titleItemContainer}>
-          <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по приоритету</Typography.Paragraph>
-          <Select
-            onChange={onPriorityChange}
-            options={preparedOptionsForPrioritySelect}
-            placeholder="Приоритет"
-            className={styles.selectFilter}
-          />
+        <div className={styles.contentWrapper}>
+          {isLoading ? <Skeleton /> : issues.map((issue) => <IssueItem key={issue.id} issue={issue} />)}
+          {notFound()}
         </div>
-        <div className={styles.titleItemContainer}>
-          <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по статусу</Typography.Paragraph>
-          <Select
-            onChange={onStatusChange}
-            options={preparedOptionsForStatusSelect}
-            placeholder="Статус"
-            className={styles.selectFilter}
-          />
-        </div>
-      </div>
-      <div className={styles.contentWrapper}>
-        {isLoading ? <Skeleton /> : issues.map((issue) => <IssueItem key={issue.id} issue={issue} />)}
-        {notFound()}
       </div>
     </div>
   );

@@ -33,7 +33,6 @@ export default function SignIn() {
     try {
       setIsLoading(true);
       const response = await api.signIn(values);
-      console.log(response);
 
       if (response.data) {
         setCookies("token", response.data.token, {
@@ -52,7 +51,7 @@ export default function SignIn() {
   };
 
   return (
-    <div>
+    <div className={`${styles.layoutWrapper} ${isLoading ? styles.layoutWrapperLoading : ""}`}>
       {isLoading && (
         <div className={styles.loadingCOntainer}>
           <Spin className={styles.loadingSpin} size="large" />
