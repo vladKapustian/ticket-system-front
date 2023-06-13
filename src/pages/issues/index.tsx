@@ -8,25 +8,25 @@ import { Skeleton } from "antd";
 import { api } from "@/api";
 import { useRouter } from "next/router";
 import { GetIssuesListParams } from "@/api/modules/request";
+import { useCookies } from "react-cookie";
 
-const preparedOptionsForStatusSelect = Object.entries(EIssueStatus).map(([key, value]) => ({
-  label: key,
-  value,
+const preparedOptionsForStatusSelect = Object.entries(issueStatusDictionary).map(([key, value]) => ({
+  label: value,
+  value: key,
 }));
-const preparedOptionsForPrioritySelect = Object.entries(EIssuePriority).map(([key, value]) => ({
-  label: key,
-  value,
+const preparedOptionsForPrioritySelect = Object.entries(issuePriorityDictionary).map(([key, value]) => ({
+  label: value,
+  value: key,
 }));
 
 export default function ViewRequests() {
   const router = useRouter();
-  const [issues, setIssues] = useState<TIssue[] | []>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [issues, setIssues] = useState<TIssue[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [, setCookies] = useCookies();
 
-  const getRequestParamsFromRoute = () => {
-    const query = router.query as GetIssuesListParams;
-    return query;
-  };
+  const getRequestParamsFromRoute = () => router.query as GetIssuesListParams;
 
   const fetchIssues = async (fetchParams: GetIssuesListParams) => {
     setIsLoading(true);
@@ -36,6 +36,7 @@ export default function ViewRequests() {
     } catch (err) {
       console.error(err);
       localStorage.clear();
+      setCookies("token", null);
       router.replace("/auth/sign-in");
     }
     setIsLoading(false);
@@ -47,18 +48,18 @@ export default function ViewRequests() {
   };
 
   const onPriorityChange = (value: EIssuePriority) => {
-    router.query.priority = EIssuePriority[value];
+    router.query.priority = value;
     fetchIssues(getRequestParamsFromRoute());
   };
   const onStatusChange = (value: EIssueStatus) => {
-    router.query.status = EIssueStatus[value];
+    router.query.status = value;
     fetchIssues(getRequestParamsFromRoute());
   };
 
-  const notFound = () => {
-    if (!issues.length) {
-      return <Empty className={styles.empltyIssuesList} description="Не удалось найти тикеты" />;
-    }
+  const clearFilters = () => {
+    router.query = {};
+    setSearch("");
+    fetchIssues(getRequestParamsFromRoute());
   };
 
   useEffect(() => {
@@ -69,17 +70,18 @@ export default function ViewRequests() {
     <div className={styles.container}>
       <div className={styles.layoutWrapper}>
         <div className={styles.filtersWrapper}>
-          <Typography.Title level={4}>Фильтры</Typography.Title>
           <div className={styles.titleItemContainer}>
-            <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по теме</Typography.Paragraph>
+            <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск</Typography.Paragraph>
             <Input.Search
+              value={search}
+              onChange={(e) => setSearch(e.currentTarget.value)}
               onSearch={onFilterSeacrchSubmit}
               placeholder="Заголовок искомого обращения"
               className={styles.titleFilter}
             />
           </div>
           <div className={styles.titleItemContainer}>
-            <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по приоритету</Typography.Paragraph>
+            <Typography.Paragraph className={styles.filterTitleParagraph}>Приоритет</Typography.Paragraph>
             <Select
               onChange={onPriorityChange}
               options={preparedOptionsForPrioritySelect}
@@ -88,7 +90,7 @@ export default function ViewRequests() {
             />
           </div>
           <div className={styles.titleItemContainer}>
-            <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск по статусу</Typography.Paragraph>
+            <Typography.Paragraph className={styles.filterTitleParagraph}>Статус</Typography.Paragraph>
             <Select
               onChange={onStatusChange}
               options={preparedOptionsForStatusSelect}
@@ -96,10 +98,19 @@ export default function ViewRequests() {
               className={styles.selectFilter}
             />
           </div>
+          <Button onClick={clearFilters}>Очистить фильтры</Button>
         </div>
         <div className={styles.contentWrapper}>
-          {isLoading ? <Skeleton /> : issues.map((issue) => <IssueItem key={issue.id} issue={issue} />)}
-          {notFound()}
+          {isLoading ? (
+            <div className={styles.skeletonWrapper}>
+              <Skeleton />
+            </div>
+          ) : (
+            issues.map((issue) => <IssueItem key={issue.id} issue={issue} />)
+          )}
+          {!issues.length && !isLoading && (
+            <Empty className={styles.empltyIssuesList} description="Не удалось найти тикеты" />
+          )}
         </div>
       </div>
     </div>

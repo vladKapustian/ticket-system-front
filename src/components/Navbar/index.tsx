@@ -10,17 +10,17 @@ import { AppstoreOutlined, MailOutlined } from "@ant-design/icons";
 import { ItemType } from "antd/es/menu/hooks/useItems";
 
 export const Navbar = () => {
-  const [_, setCookies] = useCookies(["token"]);
-  const [email, setEmail] = useState<string>();
+  const [, setCookies] = useCookies(["token"]);
+  const [email, setEmail] = useState("");
   const router = useRouter();
-  const [current, setCurrent] = useState("/issues");
-  const [userRole, setUserRole] = useState<string>();
+  const [current, setCurrent] = useState(router.asPath.includes("issues") ? "issues" : "users");
+  const [userRole, setUserRole] = useState("");
 
   const logout = async () => {
     try {
       await api.signOut();
       setCookies("token", null);
-      router.replace("/auth/sign-in/");
+      router.replace("/auth/sign-in");
     } catch (err) {
       console.error(err);
     }
@@ -29,10 +29,9 @@ export const Navbar = () => {
   const isUserSuperadmin = (): ItemType | null => {
     if (userRole === "SUPERADMIN") {
       return {
-        label: <Link href="/approve-sign-up">"Просмотр заявок"</Link>,
-        key: "/approve-sign-up",
+        label: <Link href="/users">Пользователи</Link>,
+        key: "users",
         icon: <AppstoreOutlined />,
-        onClick: () => setCurrent("/approve-sign-up"),
       };
     }
     return null;
@@ -41,9 +40,8 @@ export const Navbar = () => {
   const items: MenuProps["items"] = [
     {
       label: <Link href="/issues">Просмотр тикетов</Link>,
-      key: "2",
+      key: "issues",
       icon: <MailOutlined />,
-      onClick: () => setCurrent("/issues"),
     },
     isUserSuperadmin(),
   ];
@@ -68,6 +66,7 @@ export const Navbar = () => {
           theme="light"
           mode="horizontal"
           onClick={setMenuSelectedItem}
+          selectedKeys={[current]}
         />
         <div className={styles.rightContent}>
           <span className={styles.email}>{email}</span>

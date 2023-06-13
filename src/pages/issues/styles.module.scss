@@ -3,6 +3,9 @@
   max-width: 1440px;
   margin: 0 auto;
   padding: 20px;
+  @media screen and (max-width: 678px) {
+    padding: 20px 0;
+  }
 
   .layoutWrapper {
     margin-top: 12px;
@@ -16,9 +19,13 @@
       max-width: 360px;
       margin-right: 20px;
 
+      @media screen and (max-width: 678px) {
+        padding: 0 16px;
+      }
+
+      
       .titleItemContainer {
         margin-bottom: 12px;
-
         .filterTitleParagraph {
           margin-bottom: 4px;
         }
@@ -31,6 +38,14 @@
 
     .contentWrapper {
       flex-grow: 1;
+
+      @media screen and (max-width: 678px) {
+        padding: 16px 0;
+      }
+
+      .skeletonWrapper {
+        padding: 0 16px;
+      }
 
       .empltyIssuesList {
         margin-top: 20px;

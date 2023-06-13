@@ -43,6 +43,6 @@ export const requestApi = {
     return axiosInstance.patch(`/issues/${issueId}/status`, status);
   },
   getAllRequests:(params:GetIssuesListParams = {limit:20, page:1}):Promise<AxiosResponse<IssuesListDTO>>=>{
-    return axiosInstance.get("/issues", {params:params})
+    return axiosInstance.get("/issues", {params})
   },
 };

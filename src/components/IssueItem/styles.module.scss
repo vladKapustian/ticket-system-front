@@ -22,6 +22,10 @@
 
       .headerTopLeft {
         display: flex;
+        @media screen and (max-width: 400px) {
+          flex-direction: column;
+          align-items: flex-start;
+        }
         .priority {
           margin-right: 16px;
           font-weight: 500;
@@ -38,6 +42,8 @@
     .headerBottom {
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
+      
       .title {
         font-size: 18px;
         line-height: 120%;
@@ -45,6 +51,7 @@
       }
       .reporterEmail {
         color: #aaaaaa;
+        white-space: nowrap;
       }
     }
   }
@@ -72,8 +79,14 @@
 
     .bodyFooter {
       display: flex;
+      flex-direction: row;
       justify-content: space-between;
       align-items: center;
+
+      @media screen and (max-width: 520px) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
       .bodyFooterLeft {
       }
@@ -81,11 +94,25 @@
         display: flex;
         flex-direction: row;
 
+        @media screen and (max-width: 520px) {
+          display: flex;
+          flex-direction: column;
+        }
+
         .footerRightItemWrapper {
           display: flex;
           flex-direction: row;
           align-items: center;
-          gap: 8px;
+          margin-left: 12px;
+
+          // @media screen and (max-width:900px) {
+          //   flex-direction: column;
+          // }
+
+          @media screen and (max-width: 500px) {
+            margin-top: 8px;
+            margin-left: 0;
+          }
 
           .footerItemText {
             margin: 0;
@@ -94,7 +121,7 @@
         }
 
         .selects {
-          margin: 0 4px;
+          margin-left: 8px;
           min-width: 120px;
         }
       }
@@ -102,37 +129,17 @@
   }
 }
 
-@media screen and (max-width:500px) {
-  .bodyFooter{
+@media screen and (max-width: 1000px) {
+  .bodyFooter {
     flex-direction: column;
     justify-content: left;
   }
-  .bodyFooterRight{
+  .bodyFooterRight {
     display: flex;
     flex-direction: column;
-    
   }
   .footerRightItemWrapper {
     display: flex;
     flex-direction: column;
   }
-}
-
-@media screen and (max-width: 500px) {
-  .bodyFooter{
-    flex-direction: column;
-    justify-content: center;
-
-    .bodyFooterRight{
-      display:flex;
-      flex-direction: column;
-
-      .footerRightItemWrapper {
-        display: flex;
-        flex-direction: column;
-      }
-    }
-    
-  }
-  
 }

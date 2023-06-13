@@ -9,7 +9,7 @@ import { SignupRequest } from "@/components/SignupRequest";
 
 export default function ApproveSignup() {
   const [signupRequests, setSignupRequests] = useState<TUser[] | []>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchSignupRequests = async () => {
     setIsLoading(true);
@@ -27,7 +27,7 @@ export default function ApproveSignup() {
   }, []);
 
   const notFound = () => {
-    if (!signupRequests.length) {
+    if (!signupRequests.length && !isLoading) {
       return (
         <Empty
           className={styles.empltyIssuesList}

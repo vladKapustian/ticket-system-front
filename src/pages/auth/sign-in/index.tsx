@@ -21,17 +21,13 @@ const validatePassword = (_: any, passwordValue: string, callback: (error?: stri
 
 export default function SignIn() {
   const router = useRouter();
-  const [cookies, setCookies] = useCookies(["token", "email"]);
+  const [, setCookies] = useCookies(["token", "email"]);
   const [isLoading, setIsLoading] = useState(false);
   const { message } = App.useApp();
 
-  const showErrorMessage = () => {
-    message.error("Не удалось войти в аккаунт");
-  };
-
   const onFormSubmit = async (values: SignInData) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const response = await api.signIn(values);
 
       if (response.data) {
@@ -43,9 +39,8 @@ export default function SignIn() {
         router.replace("/issues");
       }
     } catch (error) {
-      showErrorMessage();
+      message.error("Не удалось войти в аккаунт");
       console.error(error);
-      setIsLoading(false);
     }
     setIsLoading(false);
   };
