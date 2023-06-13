@@ -1,3 +1,4 @@
+
 import { AxiosResponse } from "axios";
 import { axiosInstance } from "../axiosInstance";
 
@@ -18,6 +19,11 @@ export type TUser = {
   password: string;
 };
 
+/* Этот код определяет и экспортирует модуль под названием `signupRequestApi`, который содержит две функции:
+`getUsers` и `confirmUsers`. Эти функции выполняют HTTP-запросы с использованием Axios для получения и обновления
+данные пользователей из API. Тип `TUser` и перечисление `UserRole` также определены для обеспечения безопасности типа
+для пользовательских данных. Модуль `axiosInstance` импортируется из другого модуля для обеспечения согласованности в
+конфигурации Axios во всем приложении. */
 export const signupRequestApi = {
   getUsers: ():Promise<AxiosResponse<TUser[]>> => {
     return axiosInstance.get("/users", );
