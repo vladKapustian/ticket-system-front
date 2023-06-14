@@ -2,7 +2,7 @@ import axios from "axios";
 import { Cookies } from "react-cookie";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:6060/",
+  baseURL: "http://194.58.107.73:6060/",
   headers: {
     "Content-Type": "application/json",
   },
