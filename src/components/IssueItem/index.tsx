@@ -40,16 +40,27 @@ const IssueItem = ({ issue }: Props) => {
     setStatusBorderColor(EIssuePriorityColor[prioritySelectValue]);
   }, [prioritySelectValue]);
 
-  const onPriorityChange = (value: EIssuePriority) => {
-    setPrioritySelectValue(value);
-    api.updateRequestPriority({ priority: prioritySelectValue }, issue.id);
-    setChangeDate(new Date(Date.now()));
+  const onPriorityChange = async (value: EIssuePriority) => {
+    try {
+      setPrioritySelectValue(value);
+      console.log(value);
+
+      await api.updateRequestPriority({ priority: value }, issue.id).then;
+      setChangeDate(new Date(Date.now()));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const onStatusChange = (value: EIssueStatus) => {
-    setStatusSelectValue(value);
-    api.updateRequestStatus({ status: statusSelectValue }, issue.id);
-    setChangeDate(new Date(Date.now()));
+  const onStatusChange = async (value: EIssueStatus) => {
+    try {
+      setStatusSelectValue(value);
+      console.log(value);
+      await api.updateRequestStatus({ status: value }, issue.id);
+      setChangeDate(new Date(Date.now()));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
