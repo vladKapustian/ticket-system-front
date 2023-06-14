@@ -11,7 +11,7 @@ import { api } from "@/api";
 import { useState } from "react";
 
 const validatePassword = (_: any, passwordValue: string, callback: (error?: string) => void) => {
-  if (passwordValue.length > +8) {
+  if (passwordValue.length >= 8) {
     Promise.resolve();
     callback();
   } else {
