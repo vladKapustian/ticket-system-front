@@ -11,6 +11,13 @@
   @media screen and (max-width: 500px) {
     flex-direction: column;
   }
+
+  .headerButton{
+    margin: 0 8px;
+    @media screen and (max-width: 500px) {
+      margin: 8 0px;
+    }
+  }
 }
 
   .layoutWrapper {
