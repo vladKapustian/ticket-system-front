@@ -7,6 +7,7 @@ import Link from "next/link";
 import { api } from "@/api";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 interface ISignUpFormData {
   firstname: string;
@@ -49,69 +50,76 @@ export default function SignUp() {
     setIsLoading(false);
   };
   return (
-    <div className={styles.contentContainer}>
-      {isLoading && <Spin className={styles.loadingSpin} size="large" />}
-      <Card className={styles.formContainer}>
-        <Typography.Title level={3}>Вход в систему тикетов</Typography.Title>
-        <Form
-          layout="vertical"
-          size="middle"
-          name="normal_login"
-          className={styles.loginFormContainer}
-          initialValues={{ remember: true }}
-          onFinish={onFormSubmit}
-        >
-          <Form.Item
-            label="Имя"
-            name="firstname"
-            rules={[{ required: true, message: "Поле 'Имя' является обязательным" }]}
+    <>
+      <Head>
+        <title>Регистрация</title>
+      </Head>
+      <div className={styles.contentContainer}>
+        {isLoading && <Spin className={styles.loadingSpin} size="large" />}
+        <Card className={styles.formContainer}>
+          <Typography.Title level={3}>Вход в систему тикетов</Typography.Title>
+          <Form
+            layout="vertical"
+            size="middle"
+            name="normal_login"
+            className={styles.loginFormContainer}
+            initialValues={{ remember: true }}
+            onFinish={onFormSubmit}
           >
-            <Input placeholder="Имя" />
-          </Form.Item>
-          <Form.Item
-            label="Фамилия"
-            name="lastname"
-            rules={[{ required: true, message: "Поле 'Фамилия' является обязательным" }]}
-          >
-            <Input placeholder="Фамилия" />
-          </Form.Item>
-          <Form.Item
-            label="email"
-            name="email"
-            rules={[
-              { required: true, message: "Поле обязательно для заполнения" },
-              {
-                required: true,
-                type: "email",
-                message: "Некорректный адрес электронной почты",
-              },
-            ]}
-          >
-            <Input placeholder="E-mail" />
-          </Form.Item>
-          <Form.Item
-            label="Пароль"
-            name="password"
-            rules={[
-              { required: true, message: "Поле 'Пароль' является обязательным" },
-              {
-                validator: validatePassword,
-                message: "Поле 'Пароль' должно содержать минимум 8 символов",
-                required: true,
-              },
-            ]}
-          >
-            <Input.Password placeholder="Пароль" />
-          </Form.Item>
+            <Form.Item
+              label="Имя"
+              name="firstname"
+              rules={[{ required: true, message: "Поле 'Имя' является обязательным" }]}
+            >
+              <Input placeholder="Имя" />
+            </Form.Item>
+            <Form.Item
+              label="Фамилия"
+              name="lastname"
+              rules={[{ required: true, message: "Поле 'Фамилия' является обязательным" }]}
+            >
+              <Input placeholder="Фамилия" />
+            </Form.Item>
+            <Form.Item
+              label="email"
+              name="email"
+              rules={[
+                { required: true, message: "Поле обязательно для заполнения" },
+                {
+                  required: true,
+                  type: "email",
+                  message: "Некорректный адрес электронной почты",
+                },
+              ]}
+            >
+              <Input placeholder="E-mail" />
+            </Form.Item>
+            <Form.Item
+              label="Пароль"
+              name="password"
+              rules={[
+                { required: true, message: "Поле 'Пароль' является обязательным" },
+                {
+                  validator: validatePassword,
+                  message: "Поле 'Пароль' должно содержать минимум 8 символов",
+                  required: true,
+                },
+              ]}
+            >
+              <Input.Password placeholder="Пароль" />
+            </Form.Item>
 
-          <Form.Item className={styles.signInButtons}>
-            <Button type="primary" htmlType="submit" className={styles.formSubmitButton}>
-              Зарегистрироваться
-            </Button>
-            или <Link href="/auth/sign-in">войти</Link>
-          </Form.Item>
-        </Form>
-      </Card>
-    </div>
+            <Form.Item className={styles.signInButtons}>
+              <Button type="primary" htmlType="submit" className={styles.formSubmitButton}>
+                Зарегистрироваться
+              </Button>
+              <div className={styles.otherOption}>
+                или <Link href="/auth/sign-in">войти</Link>
+              </div>
+            </Form.Item>
+          </Form>
+        </Card>
+      </div>
+    </>
   );
 }

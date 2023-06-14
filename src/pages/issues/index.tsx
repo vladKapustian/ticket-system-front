@@ -9,6 +9,7 @@ import { api } from "@/api";
 import { useRouter } from "next/router";
 import { GetIssuesListParams } from "@/api/modules/request";
 import { useCookies } from "react-cookie";
+import Head from "next/head";
 
 const preparedOptionsForStatusSelect = Object.entries(issueStatusDictionary)
   .map(([key, value]) => ({
@@ -72,52 +73,57 @@ export default function ViewRequests() {
   }, []);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.layoutWrapper}>
-        <div className={styles.filtersWrapper}>
-          <div className={styles.titleItemContainer}>
-            <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск</Typography.Paragraph>
-            <Input.Search
-              value={search}
-              onChange={(e) => setSearch(e.currentTarget.value)}
-              onSearch={onFilterSeacrchSubmit}
-              placeholder="Заголовок искомого обращения"
-              className={styles.titleFilter}
-            />
-          </div>
-          <div className={styles.titleItemContainer}>
-            <Typography.Paragraph className={styles.filterTitleParagraph}>Приоритет</Typography.Paragraph>
-            <Select
-              onChange={onPriorityChange}
-              options={preparedOptionsForPrioritySelect}
-              placeholder="Приоритет"
-              className={styles.selectFilter}
-            />
-          </div>
-          <div className={styles.titleItemContainer}>
-            <Typography.Paragraph className={styles.filterTitleParagraph}>Статус</Typography.Paragraph>
-            <Select
-              onChange={onStatusChange}
-              options={preparedOptionsForStatusSelect}
-              placeholder="Статус"
-              className={styles.selectFilter}
-            />
-          </div>
-          <Button onClick={clearFilters}>Очистить фильтры</Button>
-        </div>
-        <div className={styles.contentWrapper}>
-          {isLoading ? (
-            <div className={styles.skeletonWrapper}>
-              <Skeleton />
+    <>
+      <Head>
+        <title>Заявки</title>
+      </Head>
+      <div className={styles.container}>
+        <div className={styles.layoutWrapper}>
+          <div className={styles.filtersWrapper}>
+            <div className={styles.titleItemContainer}>
+              <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск</Typography.Paragraph>
+              <Input.Search
+                value={search}
+                onChange={(e) => setSearch(e.currentTarget.value)}
+                onSearch={onFilterSeacrchSubmit}
+                placeholder="Заголовок искомого обращения"
+                className={styles.titleFilter}
+              />
             </div>
-          ) : (
-            issues.map((issue) => <IssueItem key={issue.id} issue={issue} />)
-          )}
-          {!issues.length && !isLoading && (
-            <Empty className={styles.empltyIssuesList} description="Не удалось найти тикеты" />
-          )}
+            <div className={styles.titleItemContainer}>
+              <Typography.Paragraph className={styles.filterTitleParagraph}>Приоритет</Typography.Paragraph>
+              <Select
+                onChange={onPriorityChange}
+                options={preparedOptionsForPrioritySelect}
+                placeholder="Приоритет"
+                className={styles.selectFilter}
+              />
+            </div>
+            <div className={styles.titleItemContainer}>
+              <Typography.Paragraph className={styles.filterTitleParagraph}>Статус</Typography.Paragraph>
+              <Select
+                onChange={onStatusChange}
+                options={preparedOptionsForStatusSelect}
+                placeholder="Статус"
+                className={styles.selectFilter}
+              />
+            </div>
+            <Button onClick={clearFilters}>Очистить фильтры</Button>
+          </div>
+          <div className={styles.contentWrapper}>
+            {isLoading ? (
+              <div className={styles.skeletonWrapper}>
+                <Skeleton />
+              </div>
+            ) : (
+              issues.map((issue) => <IssueItem key={issue.id} issue={issue} />)
+            )}
+            {!issues.length && !isLoading && (
+              <Empty className={styles.empltyIssuesList} description="Не удалось найти тикеты" />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

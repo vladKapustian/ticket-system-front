@@ -5,6 +5,7 @@ import { EIssuePriority, EIssueStatus, TIssue, issuePriorityDictionary, issueSta
 
 import styles from "./styles.module.scss";
 import { api } from "@/api";
+import Head from "next/head";
 
 type Props = {
   issue: TIssue;
@@ -64,53 +65,53 @@ const IssueItem = ({ issue }: Props) => {
   const color = issuePriorityColorsDictionary[prioritySelectValue];
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.header} onClick={onClick}>
-        <div className={styles.statusIndicator} style={{ backgroundColor: color }} />
-        <div className={styles.headerTop}>
-          <div className={styles.headerTopLeft}>
-            <div style={{ color }} className={styles.priority}>
-              {issuePriorityDictionary[prioritySelectValue]}
+      <div className={styles.wrapper}>
+        <div className={styles.header} onClick={onClick}>
+          <div className={styles.statusIndicator} style={{ backgroundColor: color }} />
+          <div className={styles.headerTop}>
+            <div className={styles.headerTopLeft}>
+              <div style={{ color }} className={styles.priority}>
+                {issuePriorityDictionary[prioritySelectValue]}
+              </div>
+              <span className={styles.createdAt}>{changeDate.toLocaleDateString()}</span>
             </div>
-            <span className={styles.createdAt}>{changeDate.toLocaleDateString()}</span>
+            <div className={styles.headerTopRight}>{issueStatusDictionary[statusSelectValue]}</div>
           </div>
-          <div className={styles.headerTopRight}>{issueStatusDictionary[statusSelectValue]}</div>
+          <div className={styles.headerBottom}>
+            <div className={styles.title}>{issue.title}</div>
+            <div className={styles.reporterEmail}>{issue.reporterEmail}</div>
+          </div>
         </div>
-        <div className={styles.headerBottom}>
-          <div className={styles.title}>{issue.title}</div>
-          <div className={styles.reporterEmail}>{issue.reporterEmail}</div>
-        </div>
-      </div>
-      {isOpen && (
-        <div className={styles.body}>
-          <div className={styles.descriptionWrapper}>{issue.description}</div>
-          <div className={styles.bodyFooter}>
-            <div className={styles.bodyFooterLeft}>Обновлено: {changeDate.toLocaleDateString()}</div>
+        {isOpen && (
+          <div className={styles.body}>
+            <div className={styles.descriptionWrapper}>{issue.description}</div>
+            <div className={styles.bodyFooter}>
+              <div className={styles.bodyFooterLeft}>Обновлено: {changeDate.toLocaleDateString()}</div>
 
-            <div className={styles.bodyFooterRight}>
-              <div className={styles.footerRightItemWrapper}>
-                <Typography.Text>Статус</Typography.Text>
-                <Select
-                  onChange={onStatusChange}
-                  className={styles.selects}
-                  options={preparedOptionsForStatusSelect}
-                  value={statusSelectValue}
-                />
-              </div>
-              <div className={styles.footerRightItemWrapper}>
-                <Typography.Text>Приоритет</Typography.Text>
-                <Select
-                  onChange={onPriorityChange}
-                  className={styles.selects}
-                  options={preparedOptionsForPrioritySelect}
-                  value={prioritySelectValue}
-                />
+              <div className={styles.bodyFooterRight}>
+                <div className={styles.footerRightItemWrapper}>
+                  <Typography.Text>Статус</Typography.Text>
+                  <Select
+                    onChange={onStatusChange}
+                    className={styles.selects}
+                    options={preparedOptionsForStatusSelect}
+                    value={statusSelectValue}
+                  />
+                </div>
+                <div className={styles.footerRightItemWrapper}>
+                  <Typography.Text>Приоритет</Typography.Text>
+                  <Select
+                    onChange={onPriorityChange}
+                    className={styles.selects}
+                    options={preparedOptionsForPrioritySelect}
+                    value={prioritySelectValue}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
   );
 };
 

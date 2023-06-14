@@ -20,6 +20,7 @@ export const Navbar = () => {
     try {
       await api.signOut();
       setCookies("token", null);
+      localStorage.clear();
       router.replace("/auth/sign-in");
     } catch (err) {
       console.error(err);

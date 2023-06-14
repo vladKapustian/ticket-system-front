@@ -1,36 +1,86 @@
-.contentContainer{
-    max-width: 1440px;
-    width: 100%;
-    min-height: 100vh;
-    margin: 0 auto;
+// Стили для контейнера формы
+.contentContainer {
     display: flex;
     justify-content: center;
     align-items: center;
-}
+    height: 100vh;
+    background-color: #f0f2f5;
+  
+    // Стили для формы
+    .formContainer {
+      width: 100%;
+      max-width: 400px;
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+      background-color: #fff;
+  
+      // Стили для заголовка формы
+      .ant-typography {
+        margin-bottom: 24px;
+        text-align: center;
+      }
+  
+      // Стили для формы входа
+      .loginFormContainer {
+        // Стили для полей формы
+        .ant-form-item {
+          margin-bottom: 0px;
+  
+          // Стили для ярлыка полей формы
+          .ant-form-item-label {
+            text-align: left;
+          }
+  
+          // Стили для поля ввода
+          .ant-form-item-control-input {
+            width: 100%;
+          }
+        }
+  
+        // Стили для кнопок формы
+        .signInButtons {
+          display: flex; 
+          justify-content: end;
+          width: 100%;
+  
+          // Стили для кнопки отправки формы
+          .formSubmitButton {
+            width: 100%;
+            margin-bottom: 0px;
+            justify-content:end;
+          }
 
-.loginFormContainer{
-    min-width: 400px;
-}
-
-.loadingSpin{
-    position: absolute;
-    margin: 50%;
-
-}
-
-.formContainer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.signInButtons{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.formSubmitButton{
-    margin-right: 12px;
-}
+          .otherOption{
+            display: flex;
+            gap: 4px;
+            justify-content: end;
+          }
+        }
+      }
+    }
+  
+    // Стили для загрузки
+    .loadingSpin {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  // Медиа-запрос для мобильных устройств
+  @media only screen and (max-width: 767px) {
+    .contentContainer {
+      .formContainer {
+        max-width: none;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 16px 16px 0px 16px;
+  
+        .ant-typography {
+          margin-bottom: 16px;
+        }
+      }
+    }
+  }

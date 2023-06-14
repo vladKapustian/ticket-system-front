@@ -6,6 +6,7 @@ import { Skeleton } from "antd";
 import { api } from "@/api";
 import { TUser } from "@/api/modules/signupRequests";
 import { SignupRequest } from "@/components/SignupRequest";
+import Head from "next/head";
 
 export default function ApproveSignup() {
   const [signupRequests, setSignupRequests] = useState<TUser[] | []>([]);
@@ -50,24 +51,29 @@ export default function ApproveSignup() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.layoutWrapper}>
-        <div className={styles.headerPanel}>
-          <Typography.Title level={4}>Активные пользователи и заявки</Typography.Title>
-          <Button className={styles.headerButton} disabled={!signupRequests.length} onClick={deleteIncomingReqeusts}>
-            Удалить все входящие заявки
-          </Button>
-        </div>
+    <>
+      <Head>
+        <title>Пользователи</title>
+      </Head>
+      <div className={styles.container}>
+        <div className={styles.layoutWrapper}>
+          <div className={styles.headerPanel}>
+            <Typography.Title level={4}>Активные пользователи и заявки</Typography.Title>
+            <Button className={styles.headerButton} disabled={!signupRequests.length} onClick={deleteIncomingReqeusts}>
+              Удалить все входящие заявки
+            </Button>
+          </div>
 
-        <div className={styles.contentWrapper}>
-          {isLoading ? (
-            <Skeleton />
-          ) : (
-            signupRequests.map((request) => <SignupRequest key={request.id} request={request} />)
-          )}
-          {notFound()}
+          <div className={styles.contentWrapper}>
+            {isLoading ? (
+              <Skeleton />
+            ) : (
+              signupRequests.map((request) => <SignupRequest key={request.id} request={request} />)
+            )}
+            {notFound()}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

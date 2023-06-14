@@ -18,15 +18,6 @@ export default function Layout({ children }: { children: ReactNode }) {
     if (router.asPath.includes("/request")) return;
     if (cookies.token && !router.asPath) router.replace("/issues/");
     if (!cookies.token && !router.asPath.includes("/auth")) router.replace("/auth/sign-in");
-    if (
-      !router.asPath ||
-      !router.asPath.includes("/auth") ||
-      !router.asPath.includes("/issues") ||
-      !router.asPath.includes("/users") ||
-      !router.asPath.includes("/request")
-    ) {
-      router.replace(cookies.token ? "/issues" : "/sign-up");
-    }
   }, [cookies.token]);
 
   const { userEmail, setUserEmail } = useContext(EmailContext);
