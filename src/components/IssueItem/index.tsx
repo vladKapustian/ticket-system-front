@@ -61,7 +61,7 @@ const IssueItem = ({ issue }: Props) => {
     }
   };
 
-  const color = issuePriorityColorsDictionary[issue.priority];
+  const color = issuePriorityColorsDictionary[prioritySelectValue];
 
   return (
     <div className={styles.wrapper}>
@@ -70,7 +70,7 @@ const IssueItem = ({ issue }: Props) => {
         <div className={styles.headerTop}>
           <div className={styles.headerTopLeft}>
             <div style={{ color }} className={styles.priority}>
-              {issuePriorityDictionary[issue.priority]}
+              {issuePriorityDictionary[prioritySelectValue]}
             </div>
             <span className={styles.createdAt}>{changeDate.toLocaleDateString()}</span>
           </div>
