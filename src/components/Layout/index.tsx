@@ -15,8 +15,8 @@ export default function Layout({ children }: { children: ReactNode }) {
   const isShowCondition = !(router.asPath.includes("/auth") || router.asPath.includes("/request"));
 
   useEffect(() => {
+    if (router.asPath.includes("/request")) return;
     if (cookies.token && !router.asPath) router.replace("/issues/");
-    // if (router.asPath.includes("/request")) return;
     if (!cookies.token && !router.asPath.includes("/auth")) router.replace("/auth/sign-in");
   }, [cookies.token]);
 

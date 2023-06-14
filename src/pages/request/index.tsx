@@ -21,7 +21,6 @@ interface IRequestFormValue {
 }
 
 export default function Request() {
-  const router = useRouter();
   const { message } = App.useApp();
   const [loading, setIsLoading] = useState(false);
   const formRef = React.useRef<FormInstance>(null);
