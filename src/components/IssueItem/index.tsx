@@ -36,23 +36,27 @@ const IssueItem = ({ issue }: Props) => {
   const onClick = () => setIsOpen((prev) => !prev);
 
   const onPriorityChange = async (value: EIssuePriority) => {
+    const persistedValue = value;
     setPrioritySelectValue(value);
     try {
-      await api.updateRequestPriority({ priority: prioritySelectValue }, issue.id);
+      await api.updateRequestPriority({ priority: value }, issue.id);
       setChangeDate(new Date(Date.now()));
     } catch (err) {
       console.error(err);
+      setPrioritySelectValue(persistedValue);
       message.error("Не удалось обновить приоритет тикета");
     }
   };
 
   const onStatusChange = async (value: EIssueStatus) => {
+    const persistedValue = value;
     setStatusSelectValue(value);
     try {
-      await api.updateRequestStatus({ status: statusSelectValue }, issue.id);
+      await api.updateRequestStatus({ status: value }, issue.id);
       setChangeDate(new Date(Date.now()));
     } catch (err) {
       console.error(err);
+      setStatusSelectValue(persistedValue);
       message.error("Не удалось обновить статус тикета");
     }
   };
