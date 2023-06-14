@@ -30,8 +30,6 @@ export default function ViewRequests() {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [, setCookies] = useCookies();
-  const [searchpriority, setSearchPriority] = useState<EIssueStatus | null | undefined>(undefined);
-  const [searchStatus, setSearchStatus] = useState<EIssuePriority | null | undefined>(undefined);
 
   const getRequestParamsFromRoute = () => router.query as GetIssuesListParams;
 
@@ -56,20 +54,16 @@ export default function ViewRequests() {
 
   const onPriorityChange = (value: EIssuePriority | undefined) => {
     router.query.priority = value;
-    setSearchStatus(value);
     fetchIssues(getRequestParamsFromRoute());
   };
   const onStatusChange = (value: EIssueStatus | undefined) => {
     router.query.status = value;
-    setSearchPriority(value);
     fetchIssues(getRequestParamsFromRoute());
   };
 
   const clearFilters = () => {
     router.query = {};
     setSearch("");
-    setSearchPriority(undefined);
-    setSearchStatus(undefined);
     fetchIssues(getRequestParamsFromRoute());
   };
 
@@ -94,7 +88,6 @@ export default function ViewRequests() {
           <div className={styles.titleItemContainer}>
             <Typography.Paragraph className={styles.filterTitleParagraph}>Приоритет</Typography.Paragraph>
             <Select
-              value={searchStatus}
               onChange={onPriorityChange}
               options={preparedOptionsForPrioritySelect}
               placeholder="Приоритет"
@@ -104,7 +97,6 @@ export default function ViewRequests() {
           <div className={styles.titleItemContainer}>
             <Typography.Paragraph className={styles.filterTitleParagraph}>Статус</Typography.Paragraph>
             <Select
-              value={searchpriority}
               onChange={onStatusChange}
               options={preparedOptionsForStatusSelect}
               placeholder="Статус"
