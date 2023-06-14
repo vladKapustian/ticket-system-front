@@ -33,9 +33,6 @@ export const requestApi = {
   createRequest: (values: RequestCreateData) => {
     return axiosInstance.post("/issues", values);
   },
-  deleteRequest: (values: TIssue) => {
-    return axiosInstance.patch(`/issues/${values.id}/status`, values);
-  },
   updateRequestPriority: (priority: {priority:string}, issueId:number) => {
     return axiosInstance.patch(`/issues/${issueId}/priority`, priority);
   },

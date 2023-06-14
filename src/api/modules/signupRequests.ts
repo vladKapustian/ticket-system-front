@@ -25,4 +25,7 @@ export const signupRequestApi = {
   confirmUsers: (id:{id:number}):Promise<AxiosResponse<TUser>> => {
     return axiosInstance.patch(`/users/${id.id}/confirm`, id);
   },
+  deleteAllRequests: ():Promise<AxiosResponse<any>>=>{
+    return axiosInstance.delete(`/users/unconfirmed`);
+  }
 };

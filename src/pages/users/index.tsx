@@ -1,4 +1,4 @@
-import { Empty, Typography } from "antd";
+import { Button, Empty, Typography } from "antd";
 import styles from "./styles.module.scss";
 import { useEffect, useState } from "react";
 import { Skeleton } from "antd";
@@ -16,6 +16,16 @@ export default function ApproveSignup() {
     try {
       const res = await api.getUsers();
       setSignupRequests(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+    setIsLoading(false);
+  };
+
+  const deleteIncomingReqeusts = async () => {
+    setIsLoading(true);
+    try {
+      api.deleteAllRequests();
     } catch (err) {
       console.error(err);
     }
@@ -40,7 +50,10 @@ export default function ApproveSignup() {
   return (
     <div className={styles.container}>
       <div className={styles.layoutWrapper}>
-        <Typography.Title level={4}>Активные пользователи и заявки</Typography.Title>
+        <div className={styles.headerPanel}>
+          <Typography.Title level={4}>Активные пользователи и заявки</Typography.Title>
+          <Button onClick={deleteIncomingReqeusts}>Удалить все входящие заявки</Button>
+        </div>
 
         <div className={styles.contentWrapper}>
           {isLoading ? (
