@@ -25,7 +25,9 @@ export default function ApproveSignup() {
   const deleteIncomingReqeusts = async () => {
     setIsLoading(true);
     try {
-      api.deleteAllRequests();
+      await api.deleteAllRequests();
+      const res = await api.getUsers();
+      setSignupRequests(res.data);
     } catch (err) {
       console.error(err);
     }
