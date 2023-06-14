@@ -10,14 +10,19 @@ import { useRouter } from "next/router";
 import { GetIssuesListParams } from "@/api/modules/request";
 import { useCookies } from "react-cookie";
 
-const preparedOptionsForStatusSelect = Object.entries(issueStatusDictionary).map(([key, value]) => ({
-  label: value,
-  value: key,
-}));
-const preparedOptionsForPrioritySelect = Object.entries(issuePriorityDictionary).map(([key, value]) => ({
-  label: value,
-  value: key,
-}));
+const preparedOptionsForStatusSelect = Object.entries(issueStatusDictionary)
+  .map(([key, value]) => ({
+    label: value,
+    value: key,
+  }))
+  .concat({ label: "Ничего", value: "" });
+
+const preparedOptionsForPrioritySelect = Object.entries(issuePriorityDictionary)
+  .map(([key, value]) => ({
+    label: value,
+    value: key,
+  }))
+  .concat({ label: "Ничего", value: "" });
 
 export default function ViewRequests() {
   const router = useRouter();
@@ -47,11 +52,11 @@ export default function ViewRequests() {
     fetchIssues(getRequestParamsFromRoute());
   };
 
-  const onPriorityChange = (value: EIssuePriority) => {
+  const onPriorityChange = (value: EIssuePriority | undefined) => {
     router.query.priority = value;
     fetchIssues(getRequestParamsFromRoute());
   };
-  const onStatusChange = (value: EIssueStatus) => {
+  const onStatusChange = (value: EIssueStatus | undefined) => {
     router.query.status = value;
     fetchIssues(getRequestParamsFromRoute());
   };
