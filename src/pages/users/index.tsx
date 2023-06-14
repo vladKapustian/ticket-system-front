@@ -54,7 +54,9 @@ export default function ApproveSignup() {
       <div className={styles.layoutWrapper}>
         <div className={styles.headerPanel}>
           <Typography.Title level={4}>Активные пользователи и заявки</Typography.Title>
-          <Button onClick={deleteIncomingReqeusts}>Удалить все входящие заявки</Button>
+          <Button disabled={!signupRequests.length} onClick={deleteIncomingReqeusts}>
+            Удалить все входящие заявки
+          </Button>
         </div>
 
         <div className={styles.contentWrapper}>
