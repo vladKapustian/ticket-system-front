@@ -5,13 +5,12 @@ import ReportImage from "../../../public/reportImage.svg";
 import styles from "./styles.module.scss";
 import { App, Button, Card, Checkbox, Form, FormInstance, Input, Result, Select } from "antd";
 import { Typography } from "antd";
-import { useRouter } from "next/router";
 import { api } from "@/api";
 import { EIssuePriority } from "@/types/Issue";
 
-const { Option } = Select;
-const { TextArea } = Input;
-const { Title, Paragraph } = Typography;
+const { Option } = Select; // Достаем необходимые компоеннты из инпортированных ранее
+const { TextArea } = Input; // Достаем необходимые компоеннты из инпортированных ранее
+const { Title, Paragraph } = Typography; // Достаем необходимые компоеннты из инпортированных ранее
 interface IRequestFormValue {
   reporterName: string;
   reporterEmail: string;
@@ -21,17 +20,17 @@ interface IRequestFormValue {
 }
 
 export default function Request() {
-  const router = useRouter();
-  const { message } = App.useApp();
-  const [loading, setIsLoading] = useState(false);
-  const formRef = React.useRef<FormInstance>(null);
-  const [requestIsSent, setRequestIsSent] = useState(false);
+  const { message } = App.useApp(); // Помошник для уведомлений
+  const [loading, setIsLoading] = useState(false); // Состояние загрузки
+  const formRef = React.useRef<FormInstance>(null); // Создаем ссылку на форму
+  const [requestIsSent, setRequestIsSent] = useState(false); // Состояние отправленного запроса
 
-  const onValuerChange = (value: EIssuePriority) => {
+  // Функция обработчик изменения приоритета
+  const onValueChange = (value: EIssuePriority) => {
     switch (value) {
-      case EIssuePriority.LOW:
-        formRef.current?.setFieldsValue(value);
-        break;
+      case EIssuePriority.LOW: // Если выбранный статус LOW
+        formRef.current?.setFieldsValue(value); // Выставляем этот статус
+        break; // Прекрыщаем проверки
       case EIssuePriority.MEDIUM:
         formRef.current?.setFieldsValue(value);
         break;
@@ -41,29 +40,30 @@ export default function Request() {
     }
   };
 
+  // Показываем сообщение ошибки
   const showErrorMessage = () => {
     message.error("Не удалось войти в аккаунт");
   };
 
+  // Функция-обработчик отправкии формы
   const onFormSubmit = async (values: IRequestFormValue) => {
     try {
-      setIsLoading(true);
-      const response = await api.createRequest(values);
-      setRequestIsSent(true);
+      setIsLoading(true); // Выстявляем состояние загрузки
+      await api.createRequest(values); // Запрос на создаение тикета, получение ответа
+      setRequestIsSent(true); // Выстаялем сосотояние отправленного тикета
     } catch (error) {
-      setIsLoading(false);
-      showErrorMessage();
-      console.error(error);
+      showErrorMessage(); // Показываем сообщение ошибки пользователю
+      console.error(error); // Выводим ошибку в консоль
     }
-    setIsLoading(false);
+    setIsLoading(false); // Отключаем состояние загрузки
   };
 
   return (
     <div className={styles.requestPageContainer}>
       <Image className={styles.reportImage} src={ReportImage} alt="" />
-
       <div className={styles.requestFormWrapper}>
-        {!requestIsSent ? (
+        {/* Если пользовтель еще не отправил запрос */}
+        {!requestIsSent ? ( 
           <div className={styles.formContainer}>
             <Title className={styles.formPageTitle}>Требуется помощь?</Title>
             <Paragraph className={styles.formPageDescriptionText}>
@@ -71,6 +71,7 @@ export default function Request() {
               продуктами. Пожалуйста, оставьте информацию о проблеме, а также свои комментарии контактные данные, чтобы
               мы могли вам оказать поощь как можно быстрее!
             </Paragraph>
+            {/* Обертка формы */}
             <Form
               layout="vertical"
               size="middle"
@@ -78,6 +79,7 @@ export default function Request() {
               initialValues={{ remember: true }}
               onFinish={onFormSubmit}
             >
+              {/* Предмет формы */}
               <Form.Item
                 className={`${styles.formItem}`}
                 label="Как к вам можно обращаться"
@@ -108,7 +110,7 @@ export default function Request() {
                 name="priority"
                 rules={[{ required: true, message: "Поле обязательно для заполнения" }]}
               >
-                <Select placeholder="Выберите уровень важности заявки" onChange={onValuerChange} allowClear>
+                <Select placeholder="Выберите уровень важности заявки" onChange={onValueChange} allowClear>
                   <Option value={EIssuePriority.LOW}>Низкая</Option>
                   <Option value={EIssuePriority.MEDIUM}>Средняя</Option>
                   <Option value={EIssuePriority.HIGH}>Высокая</Option>

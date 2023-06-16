@@ -1,13 +1,12 @@
-import { App, Button, Card, Form, Input, Spin, Typography } from "antd";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { App, Button, Card, Form, Input, Spin, Typography } from "antd"; // компоненты ui-кита
 
 import styles from "./styles.module.scss";
-import { useCookies } from "react-cookie";
 import Link from "next/link";
 import { api } from "@/api";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
+// Интерфейс данных для формы регистрации
 interface ISignUpFormData {
   firstname: string;
   lastname: string;
@@ -15,6 +14,7 @@ interface ISignUpFormData {
   password: string;
 }
 
+// Функция валидации пароля, (см. sign-in/index.tsx)
 const validatePassword = (_: any, passwordValue: string, callback: Function) => {
   if (passwordValue.length >= 8) {
     Promise.resolve();
@@ -25,32 +25,39 @@ const validatePassword = (_: any, passwordValue: string, callback: Function) => 
 };
 
 export default function SignUp() {
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const { message } = App.useApp();
+  const [isLoading, setIsLoading] = useState(false); // Сотояние загрузки
+  const router = useRouter(); // Функция работы с роутами
+  const { message } = App.useApp(); // Функция работы с сообщениями ошибки и успеха
 
+  // Отправка сообщения успешной регистрации
   const showSuccessMessage = () => {
     message.success("Пользователь успешно создан. Дождитесь подтверждения администатора");
   };
 
+  // Отправка сообщения неудачной регистрации
   const showErrorMessage = () => {
     message.success("Не удалось создать пользователя. Проверьте все введенные данные или обратитесь к администратору");
   };
 
+  // Обработчик отправки формы
   const onFormSubmit = async (values: ISignUpFormData) => {
     try {
-      setIsLoading(true);
-      await api.signUp(values);
-      showSuccessMessage();
-      router.replace("/auth/sign-in/");
+      setIsLoading(true); // Выставляем состояние загрузки
+      await api.signUp(values); // Отправляем запрос о регистрации
+      showSuccessMessage(); // Показывем сообщение успеха
+      router.replace("/auth/sign-in/"); // Перенаправляем пользовтеля на страницу логина
     } catch (error) {
-      showErrorMessage();
+      // Отлавливаем ошибки
+      showErrorMessage(); // Показываем сообщение ошибки
     }
-    setIsLoading(false);
+    setIsLoading(false); // Отключаем состояние загрузки
   };
+
   return (
     <div className={styles.contentContainer}>
+      {/* Отображаем спиннер при загрузке */}
       {isLoading && <Spin className={styles.loadingSpin} size="large" />}
+      {/* Обертка формы */}
       <Card className={styles.formContainer}>
         <Typography.Title level={3}>Вход в систему тикетов</Typography.Title>
         <Form
@@ -61,6 +68,7 @@ export default function SignUp() {
           initialValues={{ remember: true }}
           onFinish={onFormSubmit}
         >
+          {/* Поле формы */}
           <Form.Item
             label="Имя"
             name="firstname"

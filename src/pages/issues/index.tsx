@@ -10,58 +10,68 @@ import { useRouter } from "next/router";
 import { GetIssuesListParams } from "@/api/modules/request";
 import { useCookies } from "react-cookie";
 
+// Опции для селекта статусов
 const preparedOptionsForStatusSelect = Object.entries(issueStatusDictionary).map(([key, value]) => ({
   label: value,
   value: key,
 }));
+
+// Опции для селекта приоритетов
 const preparedOptionsForPrioritySelect = Object.entries(issuePriorityDictionary).map(([key, value]) => ({
   label: value,
   value: key,
 }));
 
 export default function ViewRequests() {
-  const router = useRouter();
-  const [issues, setIssues] = useState<TIssue[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [, setCookies] = useCookies();
+  const router = useRouter(); // Хук для работы с query и навигацией
+  const [issues, setIssues] = useState<TIssue[]>([]); // состояние хранящее все данные текущих тикетов
+  const [isLoading, setIsLoading] = useState(true); // состояние загрузки
+  const [search, setSearch] = useState(""); // Состояние значения инпута поиска
+  const [, setCookies] = useCookies(); // Используем файлы cookies
 
-  const getRequestParamsFromRoute = () => router.query as GetIssuesListParams;
+  const getRequestParamsFromRoute = () => router.query as GetIssuesListParams; // При каждом запросе на бек достаем параменты фильтрыции из query
 
+  // Функция запроса к API
   const fetchIssues = async (fetchParams: GetIssuesListParams) => {
-    setIsLoading(true);
+    setIsLoading(true); // Состояние загрузки
     try {
-      const res = await api.getAllRequests(fetchParams);
-      setIssues(res.data.data);
+      const res = await api.getAllRequests(fetchParams); // Делаем запрос и получаем ответ от бека
+      setIssues(res.data.data); // Добавляем данные для карточки в issues
     } catch (err) {
-      console.error(err);
-      localStorage.clear();
-      setCookies("token", null);
-      router.replace("/auth/sign-in");
+      console.error(err); // Выводим ошибку в консоль
+      localStorage.clear(); // Очищаем localSotrage
+      setCookies("token", null); // Очищаем куки
+      router.replace("/auth/sign-in"); // Переносим пользователя на страницу логина
     }
-    setIsLoading(false);
+    setIsLoading(false); // убираем состояние загрузки
   };
 
+  // Функция отрабатывающая при зименении инпута с поиском
   const onFilterSeacrchSubmit = (value: string) => {
     router.query.title = value;
     fetchIssues(getRequestParamsFromRoute());
   };
 
+  // Функция отрабатывающая при зименении слекта приоритов
   const onPriorityChange = (value: EIssuePriority) => {
     router.query.priority = value;
-    fetchIssues(getRequestParamsFromRoute());
+    fetchIssues(getRequestParamsFromRoute()); // Достаем параметы из query и делаем запрос на бек
   };
+
+  // Функция отрабатывающая при зименении слекта статусов
   const onStatusChange = (value: EIssueStatus) => {
     router.query.status = value;
-    fetchIssues(getRequestParamsFromRoute());
+    fetchIssues(getRequestParamsFromRoute()); // Достаем параметы из query и делаем запрос на бек
   };
 
+  // Функция очистки фильтров
   const clearFilters = () => {
-    router.query = {};
-    setSearch("");
-    fetchIssues(getRequestParamsFromRoute());
+    router.query = {}; // Очищаем query
+    setSearch(""); // Очищаем инпут поиска
+    fetchIssues(getRequestParamsFromRoute()); // Достаем параметы из query и делаем запрос на бек
   };
 
+  // При загрузке страницы белаем запрос на бек
   useEffect(() => {
     fetchIssues(getRequestParamsFromRoute());
   }, []);
@@ -70,6 +80,7 @@ export default function ViewRequests() {
     <div className={styles.container}>
       <div className={styles.layoutWrapper}>
         <div className={styles.filtersWrapper}>
+          {/* Контейнер селектов с поиском */}
           <div className={styles.titleItemContainer}>
             <Typography.Paragraph className={styles.filterTitleParagraph}>Поиск</Typography.Paragraph>
             <Input.Search
@@ -100,14 +111,18 @@ export default function ViewRequests() {
           </div>
           <Button onClick={clearFilters}>Очистить фильтры</Button>
         </div>
+        {/* Контейнер для карточек */}
         <div className={styles.contentWrapper}>
+          {/* Показываем skeleton (см. antd), если активно состояние загрузки */}
           {isLoading ? (
             <div className={styles.skeletonWrapper}>
               <Skeleton />
             </div>
           ) : (
-            issues.map((issue) => <IssueItem key={issue.id} issue={issue} />)
+            // Отображаем все карточки
+            issues.map((issue) => <IssueItem key={issue.id} issue={issue} />) 
           )}
+          {/* Если нет карточек, отображаем сообщение о ненайденных карточках */}
           {!issues.length && !isLoading && (
             <Empty className={styles.empltyIssuesList} description="Не удалось найти тикеты" />
           )}

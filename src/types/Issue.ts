@@ -1,9 +1,11 @@
+// Все возможные приоритеты
 export enum EIssuePriority {
   LOW = "LOW",
   MEDIUM = "MEDIUM",
   HIGH = "HIGH",
 }
 
+// Все возможные статусы
 export enum EIssueStatus {
   BACKLOG = "BACKLOG",
   IN_PROGRESS = "IN_PROGRESS",
@@ -12,6 +14,7 @@ export enum EIssueStatus {
   CANCELED = "CANCELED",
 }
 
+// Тип данных для зранения одного тикета
 export type TIssue = {
   id: number;
   title: string;
@@ -24,6 +27,7 @@ export type TIssue = {
   createdAt: Date;
 };
 
+// Словарь со значениями для селектом приоритетов и статусрв
 export const issuePriorityDictionary: Record<EIssuePriority, string> = {
   [EIssuePriority.LOW]: "Несрочно",
   [EIssuePriority.MEDIUM]: "Некритично",

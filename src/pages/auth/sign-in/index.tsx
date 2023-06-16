@@ -10,39 +10,45 @@ import styles from "./styles.module.scss";
 import { api } from "@/api";
 import { useState } from "react";
 
+// Функция валидации пароля
 const validatePassword = (_: any, passwordValue: string, callback: (error?: string) => void) => {
-  if (passwordValue.length > +8) {
-    Promise.resolve();
+  if (passwordValue.length >= 8) {
+    // на каждый ввод символа проверяем длину строки
+    Promise.resolve(); // При успешной проверке ничего не отображаем
     callback();
   } else {
-    callback("Error");
+    callback("Error"); // Выдаем ошибку если проверка провалилась
   }
 };
 
+// Страница логина
 export default function SignIn() {
-  const router = useRouter();
-  const [, setCookies] = useCookies(["token", "email"]);
-  const [isLoading, setIsLoading] = useState(false);
-  const { message } = App.useApp();
+  const router = useRouter(); // Хук для работы роутингом
+  const [, setCookies] = useCookies(["token", "email"]); // Достаем email пользователя из cookies
+  const [isLoading, setIsLoading] = useState(false); // Состояние загрузки
+  const { message } = App.useApp(); // Помошник для уведомлений
 
+  // Функция-обработчик отправкии формы
   const onFormSubmit = async (values: SignInData) => {
-    setIsLoading(true);
+    setIsLoading(true); // Выстявляем состояние загрузки
     try {
-      const response = await api.signIn(values);
+      const response = await api.signIn(values); // Запрос на логин, получение ответа
 
+      // Если в поле data ответа что-то лежит
       if (response.data) {
+        // Кладем в куки токен для аутентификации
         setCookies("token", response.data.token, {
-          expires: new Date("Thu Jan 01 2099 00:00:00 GMT+0300 (Moscow Standard Time)"),
+          expires: new Date("Thu Jan 01 2099 00:00:00 GMT+0300 (Moscow Standard Time)"), // Дата истечения
         });
-        localStorage.setItem("role", response.data.role);
-        localStorage.setItem("userEmail", values.email);
-        router.replace("/issues");
+        localStorage.setItem("role", response.data.role); // Кладем в localstorage роль пользователя
+        localStorage.setItem("userEmail", values.email); // Кладем в localStorage почту пооьзователя
+        router.replace("/issues"); // перенаправляем на страницу с тикетами
       }
     } catch (error) {
-      message.error("Не удалось войти в аккаунт");
-      console.error(error);
+      message.error("Не удалось войти в аккаунт"); // Сообщение ошибки
+      console.error(error); // Выводим в консоль
     }
-    setIsLoading(false);
+    setIsLoading(false); // Отключаем состояние загрузки
   };
 
   return (
@@ -52,9 +58,11 @@ export default function SignIn() {
           <Spin className={styles.loadingSpin} size="large" />
         </div>
       )}
+      {/* Контейнер для тела страницы */}
       <div className={styles.layoutContainer}>
         <Card className={styles.loginFormContainer}>
           <Typography.Title level={3}>Вход в систему тикетов</Typography.Title>
+          {/* Компонент формы */}
           <Form
             layout="vertical"
             name="normal_login"
@@ -62,6 +70,7 @@ export default function SignIn() {
             initialValues={{ remember: true }}
             onFinish={onFormSubmit}
           >
+            {/* Поле формы */}
             <Form.Item
               label="Имя пользователя"
               name="email"
