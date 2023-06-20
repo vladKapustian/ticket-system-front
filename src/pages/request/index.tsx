@@ -150,7 +150,7 @@ export default function Request() {
                   Отправить заявку
                 </Button>
               </Form.Item>
-            </Form>{" "}
+            </Form>
           </div>
         ) : (
           <Result status="success" title="Заявка успешно создана"></Result>
