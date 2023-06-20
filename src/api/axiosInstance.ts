@@ -2,7 +2,7 @@ import axios from "axios";
 import { Cookies } from "react-cookie";
 
 const axiosInstance = axios.create({
-  baseURL: "http://194.58.107.73:6060/",
+  baseURL: "https://tick-minder.ru/api",
   headers: {
     "Content-Type": "application/json",
   },
