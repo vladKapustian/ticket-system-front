@@ -63,7 +63,7 @@ export default function Request() {
       <Image className={styles.reportImage} src={ReportImage} alt="" />
       <div className={styles.requestFormWrapper}>
         {/* Если пользовтель еще не отправил запрос */}
-        {!requestIsSent ? ( 
+        {!requestIsSent ? (
           <div className={styles.formContainer}>
             <Title className={styles.formPageTitle}>Требуется помощь?</Title>
             <Paragraph className={styles.formPageDescriptionText}>
@@ -147,7 +147,7 @@ export default function Request() {
 
               <Form.Item className={styles.signInButtons}>
                 <Button type="primary" htmlType="submit" className={styles.formSubmitButton}>
-                  Зарегистрироваться
+                  Отправить заявку
                 </Button>
               </Form.Item>
             </Form>{" "}
